@@ -2231,7 +2231,7 @@ char *str;
         // Fake wider display-width, so hardstatus line won't wrap while using powerline symbols.
         // Basically it fixes the padding problem on the hardstatus line.
         // Let's double the display width.
-        l = D_width  + D_width ;
+        l = D_width  * 10;
       GotoPos(0, D_height - 1);
       SetRendition(captionalways || D_cvlist == 0 || D_cvlist->c_next ? &mchar_null: &mchar_so);
       l = PrePutWinMsg(str, 0, l);
