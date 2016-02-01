@@ -2131,22 +2131,22 @@ strlen_onscreen(unsigned char *c, unsigned char *end)
 {
   int len = 0;
   while (*c && (!end || c < end))
+  {
+    int v, dec = 0;
+    do
     {
-      int v, dec = 0;
-      do
-	{
-	  v = FromUtf8(*c++, &dec);
-	  if (v == -2)
-	    c--;
-	}
-      while (v < 0 && (!end || c < end));
-      if (!utf8_iscomb(v))
-        {
-          if (utf8_isdouble(v))
-            len++;
-          len++;
-        }
+      v = FromUtf8(*c++, &dec);
+      if (v == -2)
+        c--;
     }
+    while (v < 0 && (!end || c < end));
+    if (!utf8_iscomb(v))
+    {
+      if (utf8_isdouble(v))
+        len++;
+      len++;
+    }
+  }
 
   return len;
 }
@@ -2252,7 +2252,7 @@ char *str;
       str = str ? str : "";
       l = strlen(str);
       if (l > D_width)
-        l = D_width;
+        l = D_width * 10;
       GotoPos(0, 0);
       SetRendition(captionalways || D_cvlist == 0 || D_cvlist->c_next ? &mchar_null: &mchar_so);
       l = PrePutWinMsg(str, 0, l);
