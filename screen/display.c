@@ -124,7 +124,8 @@ int defmousetrack = 0;
 #ifdef AUTO_NUKE
 int defautonuke = 0;
 #endif
-int captionalways;
+int captionalways = 0;
+int captiontop = 0;
 int hardstatusemu = HSTATUS_IGNORE;
 
 int focusminwidth, focusminheight;
@@ -2382,8 +2383,8 @@ int y, from, to, isblank;
       lvp = 0;
       for (cv = display->d_cvlist; cv; cv = cv->c_next)
 	{
-	  if (y == cv->c_ye + 1 && from >= cv->c_xs && from <= cv->c_xe)
-	    {
+    if (y == (captiontop ? cv->c_ys - 1 : cv->c_ye + 1) && from >= cv->c_xs && from <= cv->c_xe) {
+	    
 #ifdef UTF8
 	      int extrabytes = strlen(captionstring) - strlen_onscreen(captionstring, NULL);
 #else
@@ -2405,8 +2406,8 @@ int y, from, to, isblank;
 		PUTCHARLP(' ');
 	      break;
 	    }
-	  if (from == cv->c_xe + 1 && y >= cv->c_ys && y <= cv->c_ye + 1)
-	    {
+     if (from == cv->c_xe + 1 && (y >= cv->c_ys - captiontop) && (y <= cv->c_ye + !captiontop)) {
+	    
 	      GotoPos(from, y);
 	      SetRendition(&mchar_so);
 	      PUTCHARLP(' ');
@@ -2495,7 +2496,7 @@ int y, from, to, isblank;
 /* clear lp_missing by writing the char on the screen. The
  * position must be safe.
  */
-static void
+static void 
 WriteLP(x2, y2)
 int x2, y2;
 {
@@ -3241,8 +3242,7 @@ NukePending()
 /* linux' select can't handle flow control, so wait 100ms if
  * we get EAGAIN
  */
-static void
-disp_writeev_eagain(ev, data)
+static void disp_writeev_eagain(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3254,8 +3254,7 @@ char *data;
 }
 #endif
 
-static void
-disp_writeev_fn(ev, data)
+static void disp_writeev_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3352,8 +3351,7 @@ char *data;
     }
 }
 
-static void
-disp_readev_fn(ev, data)
+static void disp_readev_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3534,8 +3532,7 @@ char *data;
   (*D_processinput)(buf, size);
 }
 
-static void
-disp_status_fn(ev, data)
+static void disp_status_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3545,8 +3542,7 @@ char *data;
     RemoveStatus();
 }
 
-static void
-disp_hstatus_fn(ev, data)
+static void disp_hstatus_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3560,8 +3556,7 @@ char *data;
   RefreshHStatus();
 }
 
-static void
-disp_blocked_fn(ev, data)
+static void disp_blocked_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3584,8 +3579,7 @@ char *data;
 }
 
 #ifdef MAPKEYS
-static void
-disp_map_fn(ev, data)
+void disp_map_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3619,8 +3613,7 @@ char *data;
 }
 #endif
 
-static void
-disp_idle_fn(ev, data)
+void disp_idle_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3658,8 +3651,7 @@ ResetIdle()
 
 #ifdef BLANKER_PRG
 
-static void
-disp_blanker_fn(ev, data)
+void disp_blanker_fn(ev, data)
 struct event *ev;
 char *data;
 {

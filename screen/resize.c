@@ -119,7 +119,7 @@ int change_flag;
   wi = D_CO;
   he = D_LI;
 #endif
-  
+
   debug2("CheckScreenSize: screen is (%d,%d)\n", wi, he);
 
 #if 0 /* XXX: Fixme */
@@ -162,8 +162,8 @@ int change_fore;
 
   cv = &D_canvas;
   cv->c_xe = wi - 1;
-  cv->c_ys = (D_has_hstatus == HSTATUS_FIRSTLINE);
-  cv->c_ye = he - 1 - ((cv->c_slperp && cv->c_slperp->c_slnext) || captionalways) - (D_has_hstatus == HSTATUS_LASTLINE);
+  cv->c_ys = ((cv->c_slperp && cv->c_slperp->c_slnext) || captionalways) * captiontop + (D_has_hstatus == HSTATUS_FIRSTLINE);
+  cv->c_ye = he - 1 - ((cv->c_slperp && cv->c_slperp->c_slnext) || captionalways) * !captiontop - (D_has_hstatus == HSTATUS_LASTLINE);
   cv->c_blank.l_height = cv->c_ye - cv->c_ys + 1;
   if (cv->c_slperp)
     {
@@ -646,7 +646,7 @@ register int n;
         : &p->w_mlines[y - p->w_histheight])
 
 #define NEWWIN(y) ((y < hi) ? &nhlines[y] : &nmlines[y - hi])
-	
+
 #else
 
 #define OLDWIN(y) (&p->w_mlines[y])
@@ -962,8 +962,8 @@ int wi, he, hi;
 	      return -1;
 	    }
 	  for (; t < wi; t++)
-	    p->w_tabs[t] = t && !(t & 7) ? 1 : 0; 
-	  p->w_tabs[wi] = 0; 
+	    p->w_tabs[t] = t && !(t & 7) ? 1 : 0;
+	  p->w_tabs[wi] = 0;
 	}
       else
 	{

@@ -114,7 +114,7 @@ struct comm comms[RC_LAST + 1] =
   { "bumpleft",		ARGS_0 },
   { "bumpright",	ARGS_0 },
   { "c1",		NEED_FORE|ARGS_01 },
-  { "caption",		ARGS_12 },
+  { "caption",		ARGS_123 },
 #ifdef MULTIUSER
   { "chacl",		ARGS_23 },
 #endif
