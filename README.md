@@ -8,6 +8,7 @@ In order to get this package compiled on rhel5:
 
   from:
     # if defined(SVR4) && !defined(DGUX) && !defined(__hpux)
+    
   to:
     # if defined(SVR4) && !defined(DGUX) && !defined(__hpux) && !defined(linux)
     
