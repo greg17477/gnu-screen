@@ -321,7 +321,7 @@ configure:3733: gcc -o conftest -g -O2   conftest.c  >&5
 conftest.c:25:1: warning: return type defaults to 'int' [-Wimplicit-int]
  main()
  ^
-/tmp/ccUwgiRT.o: In function `main':
+/tmp/cc0w2Hmd.o: In function `main':
 /raid5/git/screen/screen/conftest.c:28: undefined reference to `__something_strange_'
 collect2: error: ld returned 1 exit status
 configure:3733: $? = 1
@@ -525,7 +525,7 @@ conftest.c: In function 'main':
 conftest.c:39:1: warning: implicit declaration of function 'seteuid_is_broken' [-Wimplicit-function-declaration]
  seteuid_is_broken(0);
  ^
-/tmp/cch33xas.o: In function `main':
+/tmp/ccgYmpKW.o: In function `main':
 /raid5/git/screen/screen/conftest.c:39: undefined reference to `seteuid_is_broken'
 collect2: error: ld returned 1 exit status
 configure:4328: $? = 1
@@ -780,7 +780,7 @@ conftest.c: In function 'main':
 conftest.c:38:1: warning: implicit declaration of function 'tgetent' [-Wimplicit-function-declaration]
  tgetent((char *)0, (char *)0);
  ^
-/tmp/ccs90ALX.o: In function `main':
+/tmp/ccUh8hJA.o: In function `main':
 /raid5/git/screen/screen/conftest.c:38: undefined reference to `tgetent'
 collect2: error: ld returned 1 exit status
 configure:4857: $? = 1
@@ -1287,7 +1287,7 @@ conftest.c: In function 'main':
 conftest.c:55:1: warning: implicit declaration of function 'fdwalk' [-Wimplicit-function-declaration]
  fdwalk(NULL, NULL);
  ^
-/tmp/ccmh34vO.o: In function `main':
+/tmp/ccTv0oLF.o: In function `main':
 /raid5/git/screen/screen/conftest.c:55: undefined reference to `fdwalk'
 collect2: error: ld returned 1 exit status
 configure:6137: $? = 1
