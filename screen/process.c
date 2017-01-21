@@ -440,6 +440,7 @@ static char *resizeprompts[] = {
   "resize -l -b # lines: ",
 };
 
+
 static int
 parse_input_int(buf, len, val)
 const char *buf;
@@ -6188,7 +6189,6 @@ char *fn, **av;
 	}
       ++av;
     }
-  num = 0;
   if (av && *av && IsNumColon(*av, 10, buf, sizeof(buf)))
     {
       if (*buf != '\0')
