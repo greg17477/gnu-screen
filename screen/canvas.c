@@ -773,12 +773,13 @@ int orient;
 void
 RemCanvas()
 {
-  int ye;
+  int ye, ys;
   struct canvas *cv;
 
   debug("RemCanvas\n");
   cv = D_forecv;
   ye = cv->c_slback->c_ye;
+  ys = cv->c_slback->c_ys;
   if (cv->c_slorient == SLICE_UNKN)
     return;
   while (cv->c_slprev)
