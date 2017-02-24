@@ -121,7 +121,7 @@ int force_vt = 1;
 int VBellWait, MsgWait, MsgMinWait, SilenceWait;
 
 extern struct acluser *users;
-extern struct display *displays, *display; 
+extern struct display *displays, *display;
 extern struct LayFuncs MarkLf;
 
 extern int visual_bell;
@@ -293,7 +293,7 @@ struct passwd *ppp;
   struct spwd *sss = NULL;
   static char *spw = NULL;
 #endif
- 
+
   if (!ppp && !(ppp = getpwnam(name)))
     return NULL;
 
@@ -855,7 +855,7 @@ int main(int ac, char** av)
       nwin_options.aka = SaveStr(nwin_options.aka);
     }
   }
-  
+
   if (SockMatch && strlen(SockMatch) >= MAXSTR)
     Panic(0, "Ridiculously long socketname - try again.");
   if (cmdflag && !rflag && !dflag && !xflag)
@@ -1372,7 +1372,7 @@ int main(int ac, char** av)
   (void)StartRc(RcFileName, 0);
 # ifdef UTMPOK
 #  ifndef UTNOKEEP
-  InitUtmp(); 
+  InitUtmp();
 #  endif /* UTNOKEEP */
 # endif /* UTMPOK */
   if (display) {
@@ -1396,7 +1396,7 @@ int main(int ac, char** av)
 #ifdef LOADAV
   InitLoadav();
 #endif /* LOADAV */
- 
+
   MakeNewEnv();
   signal(SIGHUP, SigHup);
   signal(SIGINT, FinitHandler);
@@ -1443,13 +1443,13 @@ int main(int ac, char** av)
       /* NOTREACHED */
     }
   }
-  else if (ac) /* Screen was invoked with a command */ 
+  else if (ac) /* Screen was invoked with a command */
     MakeWindow(&nwin);
 
 #ifdef HAVE_BRAILLE
   StartBraille();
 #endif
-  
+
   if (display && default_startup)
     display_copyright();
   signal(SIGINT, SigInt);
@@ -1610,7 +1610,7 @@ sigret_t SigHup SIGDEFARG
   SIGRETURN;
 }
 
-/* 
+/*
  * the backend's Interrupt handler
  * we cannot insert the intrc directly, as we never know
  * if fore is valid.
@@ -1705,10 +1705,10 @@ static void DoWait()
 # else
 
 # ifdef USE_WAIT2
-  /* 
-   * From: rouilj@sni-usa.com (John Rouillard) 
+  /*
+   * From: rouilj@sni-usa.com (John Rouillard)
    * note that WUNTRACED is not documented to work, but it is defined in
-   * /usr/include/sys/wait.h, so it may work 
+   * /usr/include/sys/wait.h, so it may work
    */
   while ((pid = wait2(&wstat, WNOHANG | WUNTRACED )) > 0)
 #  else /* USE_WAIT2 */
@@ -1729,7 +1729,7 @@ static void DoWait()
       if ((p->w_pid && pid == p->w_pid) || (p->w_deadpid && pid == p->w_deadpid)) {
       /* child has ceased to exist */
         p->w_pid = 0;
-		
+
 #ifdef BSDJOBS
         if (WIFSTOPPED(wstat)) {
           debug3("Window %d pid %d: WIFSTOPPED (sig %d)\n", p->w_number, pid, WSTOPSIG(wstat));
@@ -1837,7 +1837,7 @@ void Finit(int i)
       Kill(D_userpid, SIG_BYE);
   }
   /*
-   * we _cannot_ call eexit(i) here, 
+   * we _cannot_ call eexit(i) here,
    * instead of playing with the Socket above. Sigh.
    */
   exit(i);
@@ -2194,7 +2194,7 @@ DEFINE_VARARGS_FN(Dummy)
 
 /*
  * '^' is allowed as an escape mechanism for control characters. jw.
- * 
+ *
  * Added time insertion using ideas/code from /\ndy Jones
  *   (andy@lingua.cltr.uq.OZ.AU) - thanks a lot!
  *
@@ -2379,7 +2379,7 @@ void setbacktick(int num, int lifespan, int tick, char **cmdv)
       setbacktick(num, 0, 0, (char **)0);
       return;
 	}
- 
+
     bt->ev.type = EV_READ;
     bt->ev.fd = readpipe(bt->cmdv);
     bt->ev.handler = backtick_fn;
@@ -2469,12 +2469,12 @@ char *MakeWinMsgEv(char *str, struct win *win, int esc, int padlen, struct event
   int truncper = 0;
   int trunclong = 0;
   struct backtick *bt = NULL;
- 
+
   if (winmsg_numrend >= 0)
     winmsg_numrend = 0;
   else
     winmsg_numrend = -winmsg_numrend;
-    
+
   tick = 0;
   tm = 0;
   ctrl = 0;
@@ -2510,10 +2510,10 @@ char *MakeWinMsgEv(char *str, struct win *win, int esc, int padlen, struct event
 
     if (*++s == esc)	/* double escape ? */
       continue;
- 
+
     if ((plusflg = *s == '+') != 0)
       s++;
- 
+
     if ((minusflg = *s == '-') != 0)
       s++;
 
@@ -2855,6 +2855,33 @@ char *MakeWinMsgEv(char *str, struct win *win, int esc, int padlen, struct event
       trunclong = longflg;
       p--;
       break;
+
+		case 'G':
+			{
+				*p = 0;
+				char colstr[128];
+				if (num && num < 256)
+					sprintf(colstr, "\033[38;5;%dm", num);
+				else
+					strcpy(colstr, "\033[0m");
+
+				strcpy(p, colstr);
+				p += strlen(p) - 1;
+				padlen += strlen(colstr);
+				break;
+			}
+		case 'B':
+			*p = 0;
+			char colstr[128];
+			if (num && num < 256)
+				sprintf(colstr, "\033[48;5;%dm", num);
+			else
+				strcpy(colstr, "\033[0m");
+
+			strcpy(p, colstr);
+			p += strlen(p) - 1;
+			padlen += strlen(colstr);
+			break;
 
     case '=':
     case '<':
@@ -3229,7 +3256,7 @@ static void serv_select_fn(struct event *ev, char *data)
         RethinkViewportOffsets(cv);
         if (n > cv->c_layer->l_height)
           n = cv->c_layer->l_height;
-        CV_CALL(cv, 
+        CV_CALL(cv,
             LScrollV(flayer, -n, 0, flayer->l_height - 1, 0);
             LayRedisplayLine(-1, -1, -1, 1);
             for (i = 0; i < n; i++)
@@ -3244,7 +3271,7 @@ static void serv_select_fn(struct event *ev, char *data)
         RethinkViewportOffsets(cv);
         if (n > cv->c_layer->l_height)
           n = cv->c_layer->l_height;
-        CV_CALL(cv, 
+        CV_CALL(cv,
            LScrollV(flayer, n, 0, cv->c_layer->l_height - 1, 0);
            LayRedisplayLine(-1, -1, -1, 1);
            for (i = 0; i < n; i++)
@@ -3263,7 +3290,7 @@ static void serv_select_fn(struct event *ev, char *data)
         RethinkViewportOffsets(cv);
         if (n > cv->c_layer->l_width)
           n = cv->c_layer->l_width;
-        CV_CALL(cv, 
+        CV_CALL(cv,
            LayRedisplayLine(-1, -1, -1, 1);
            for (i = 0; i < flayer->l_height; i++) {
               LScrollH(flayer, -n, i, 0, flayer->l_width - 1, 0, 0);
@@ -3283,7 +3310,7 @@ static void serv_select_fn(struct event *ev, char *data)
         RethinkViewportOffsets(cv);
         if (n > cv->c_layer->l_width)
           n = cv->c_layer->l_width;
-        CV_CALL(cv, 
+        CV_CALL(cv,
            LayRedisplayLine(-1, -1, -1, 1);
            for (i = 0; i < flayer->l_height; i++) {
              LScrollH(flayer, n, i, 0, flayer->l_width - 1, 0, 0);
@@ -3339,9 +3366,9 @@ static void logflush_fn(struct event *ev, char *data)
 /*
  * Interprets ^?, ^@ and other ^-control-char notation.
  * Interprets \ddd octal notation
- * 
- * The result is placed in *cp, p is advanced behind the parsed expression and 
- * returned. 
+ *
+ * The result is placed in *cp, p is advanced behind the parsed expression and
+ * returned.
  */
 static char *ParseChar(char *p, char *cp)
 {
