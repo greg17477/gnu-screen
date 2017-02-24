@@ -124,8 +124,7 @@ int defmousetrack = 0;
 #ifdef AUTO_NUKE
 int defautonuke = 0;
 #endif
-int captionalways = 0;
-int captiontop = 0;
+int captionalways;
 int hardstatusemu = HSTATUS_IGNORE;
 
 int focusminwidth, focusminheight;
@@ -310,8 +309,8 @@ struct mode *Mode;
 
   strncpy(D_usertty, utty, sizeof(D_usertty) - 1);
   D_usertty[sizeof(D_usertty) - 1] = 0;
-  strncpy(D_termname, term, sizeof(D_termname) - 1);
-  D_termname[sizeof(D_termname) - 1] = 0;
+  strncpy(D_termname, term, MAXTERMLEN);
+  D_termname[MAXTERMLEN] = 0;
   D_user = *u;
   D_processinput = ProcessInput;
   D_mousetrack = defmousetrack;
@@ -464,7 +463,7 @@ int adapt;
   D_x = D_y = 0;
   Flush(3);
   ClearAll();
-  debug1("we %swant to adapt all our windows to the display\n",
+  debug1("we %swant to adapt all our windows to the display\n", 
 	 (adapt) ? "" : "don't ");
   /* In case the size was changed by a init sequence */
   CheckScreenSize((adapt) ? 2 : 0);
@@ -1175,7 +1174,7 @@ int x1, y1, xs, xe, x2, y2, bce, uselayfn;
 	  D_y = D_x = 0;
 	  return;
 	}
-      /*
+      /* 
        * Workaround a hp700/22 terminal bug. Do not use CD where CE
        * is also appropriate.
        */
@@ -1440,7 +1439,7 @@ int xs, ys, xe, ye, n, bce;
   if (D_top != ys && !(alok && dlok))
     ChangeScrollRegion(ys, ye);
 
-  if (D_lp_missing &&
+  if (D_lp_missing && 
       (oldbot != D_bot ||
        (oldbot == D_bot && up && D_top == ys && D_bot == ye)))
     {
@@ -1673,7 +1672,7 @@ int jj;
       if (min == max)
         jj = ((max + 1) & 2) << 2 | ((max + 1) & 4 ? 7 : 0);
       else
-        jj = (b - min) / (max - min) << 2 | (g - min) / (max - min) << 1 | (r -
+        jj = (b - min) / (max - min) << 2 | (g - min) / (max - min) << 1 | (r - 
 min) / (max - min) | (max > 3 ? 8 : 0);
     }
   return jj;
@@ -1955,7 +1954,7 @@ char *msg;
 
   if (!display)
     return;
-
+  
   if (D_blocked)
     return;
   if (!D_tcinited)
@@ -2132,22 +2131,22 @@ strlen_onscreen(unsigned char *c, unsigned char *end)
 {
   int len = 0;
   while (*c && (!end || c < end))
-  {
-    int v, dec = 0;
-    do
     {
-      v = FromUtf8(*c++, &dec);
-      if (v == -2)
-        c--;
+      int v, dec = 0;
+      do
+	{
+	  v = FromUtf8(*c++, &dec);
+	  if (v == -2)
+	    c--;
+	}
+      while (v < 0 && (!end || c < end));
+      if (!utf8_iscomb(v))
+        {
+          if (utf8_isdouble(v))
+            len++;
+          len++;
+        }
     }
-    while (v < 0 && (!end || c < end));
-    if (!utf8_iscomb(v))
-    {
-      if (utf8_isdouble(v))
-        len++;
-      len++;
-    }
-  }
 
   return len;
 }
@@ -2229,11 +2228,9 @@ char *str;
       str = str ? str : "";
       l = strlen(str);
       if (l > D_width)
-        // Fake wider display-width, so hardstatus line won't wrap while using powerline symbols.
-        // Basically it fixes the padding problem on the hardstatus line.
-        l = D_width  * 10;
+	l = D_width;
       GotoPos(0, D_height - 1);
-      SetRendition(&mchar_null);
+      SetRendition(captionalways || D_cvlist == 0 || D_cvlist->c_next ? &mchar_null: &mchar_so);
       l = PrePutWinMsg(str, 0, l);
       if (!captionalways && D_cvlist && !D_cvlist->c_next)
         while (l++ < D_width)
@@ -2253,9 +2250,9 @@ char *str;
       str = str ? str : "";
       l = strlen(str);
       if (l > D_width)
-        l = D_width * 10;
+        l = D_width;
       GotoPos(0, 0);
-      SetRendition(&mchar_null);
+      SetRendition(captionalways || D_cvlist == 0 || D_cvlist->c_next ? &mchar_null: &mchar_so);
       l = PrePutWinMsg(str, 0, l);
       if (!captionalways || (D_cvlist && !D_cvlist->c_next))
         while (l++ < D_width)
@@ -2383,8 +2380,8 @@ int y, from, to, isblank;
       lvp = 0;
       for (cv = display->d_cvlist; cv; cv = cv->c_next)
 	{
-    if (y == (captiontop ? cv->c_ys - 1 : cv->c_ye + 1) && from >= cv->c_xs && from <= cv->c_xe) {
-	    
+	  if (y == cv->c_ye + 1 && from >= cv->c_xs && from <= cv->c_xe)
+	    {
 #ifdef UTF8
 	      int extrabytes = strlen(captionstring) - strlen_onscreen(captionstring, NULL);
 #else
@@ -2406,8 +2403,8 @@ int y, from, to, isblank;
 		PUTCHARLP(' ');
 	      break;
 	    }
-     if (from == cv->c_xe + 1 && (y >= cv->c_ys - captiontop) && (y <= cv->c_ye + !captiontop)) {
-	    
+	  if (from == cv->c_xe + 1 && y >= cv->c_ys && y <= cv->c_ye + 1)
+	    {
 	      GotoPos(from, y);
 	      SetRendition(&mchar_so);
 	      PUTCHARLP(' ');
@@ -2496,7 +2493,7 @@ int y, from, to, isblank;
 /* clear lp_missing by writing the char on the screen. The
  * position must be safe.
  */
-static void 
+static void
 WriteLP(x2, y2)
 int x2, y2;
 {
@@ -3167,7 +3164,7 @@ NukePending()
   oldrend = D_rend;
   len = D_obufp - D_obuf;
   debug1("NukePending: nuking %d chars\n", len);
-
+  
   /* Throw away any output that we can... */
 # ifdef POSIX
   tcflush(D_userfd, TCOFLUSH);
@@ -3242,7 +3239,8 @@ NukePending()
 /* linux' select can't handle flow control, so wait 100ms if
  * we get EAGAIN
  */
-static void disp_writeev_eagain(ev, data)
+static void
+disp_writeev_eagain(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3254,7 +3252,8 @@ char *data;
 }
 #endif
 
-static void disp_writeev_fn(ev, data)
+static void
+disp_writeev_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3268,7 +3267,7 @@ char *data;
     size = D_status_obufpos;
   ASSERT(len >= 0);
   size = write(D_userfd, D_obuf, size);
-  if (size >= 0)
+  if (size >= 0) 
     {
       len -= size;
       if (len)
@@ -3351,7 +3350,8 @@ char *data;
     }
 }
 
-static void disp_readev_fn(ev, data)
+static void
+disp_readev_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3532,7 +3532,8 @@ char *data;
   (*D_processinput)(buf, size);
 }
 
-static void disp_status_fn(ev, data)
+static void
+disp_status_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3542,7 +3543,8 @@ char *data;
     RemoveStatus();
 }
 
-static void disp_hstatus_fn(ev, data)
+static void
+disp_hstatus_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3556,7 +3558,8 @@ char *data;
   RefreshHStatus();
 }
 
-static void disp_blocked_fn(ev, data)
+static void
+disp_blocked_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3579,7 +3582,8 @@ char *data;
 }
 
 #ifdef MAPKEYS
-void disp_map_fn(ev, data)
+static void
+disp_map_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3596,10 +3600,10 @@ char *data;
   if ((q = D_seqh) != 0)
     {
       D_seqh = 0;
-      i = q[0] << 8 | q[1];
+      i = q[0] << 8 | q[1]; 
       i &= ~KMAP_NOTIMEOUT;
       debug1("Mapping former hit #%d - ", i);
-      debug2("%d(%s) - ", q[2], q + 3);
+      debug2("%d(%s) - ", q[2], q + 3); 
       if (StuffKey(i))
 	ProcessInput2((char *)q + 3, q[2]);
       if (display == 0)
@@ -3613,7 +3617,8 @@ char *data;
 }
 #endif
 
-void disp_idle_fn(ev, data)
+static void
+disp_idle_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3651,7 +3656,8 @@ ResetIdle()
 
 #ifdef BLANKER_PRG
 
-void disp_blanker_fn(ev, data)
+static void
+disp_blanker_fn(ev, data)
 struct event *ev;
 char *data;
 {
@@ -3719,14 +3725,14 @@ char **cmdv;
   char *m;
   int pid;
   int slave = -1;
-  char termname[30];
+  char termname[MAXTERMLEN + 6];
 #ifndef TIOCSWINSZ
   char libuf[20], cobuf[20];
 #endif
   char **np;
 
   strcpy(termname, "TERM=");
-  strncpy(termname + 5, D_termname, sizeof(termname) - 6);
+  strncpy(termname + 5, D_termname, MAXTERMLEN - 6);
   termname[sizeof(termname) - 1] = 0;
   KillBlanker();
   D_blankerpid = -1;

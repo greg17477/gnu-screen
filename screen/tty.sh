@@ -74,6 +74,7 @@ exit 0
 #ifdef __hpux
 # include <sys/modem.h>
 #endif
+#include <limits.h>
 
 #ifdef ISC
 # include <sys/tty.h>
@@ -289,11 +290,11 @@ IF{IEXTEN}	m->tio.c_lflag |= IEXTEN;
 XIF{VINTR}	m->tio.c_cc[VINTR]    = Ctrl('C');
 XIF{VQUIT}	m->tio.c_cc[VQUIT]    = Ctrl('\\');
 XIF{VERASE}	m->tio.c_cc[VERASE]   = 0x7f; /* DEL */
-XIF{VKILL}	m->tio.c_cc[VKILL]    = Ctrl('H');
+XIF{VKILL}	m->tio.c_cc[VKILL]    = Ctrl('U');
 XIF{VEOF}	m->tio.c_cc[VEOF]     = Ctrl('D');
-XIF{VEOL}	m->tio.c_cc[VEOL]     = 0000;
-XIF{VEOL2}	m->tio.c_cc[VEOL2]    = 0000;
-XIF{VSWTCH}	m->tio.c_cc[VSWTCH]   = 0000;
+XIF{VEOL}	m->tio.c_cc[VEOL]     = VDISABLE;
+XIF{VEOL2}	m->tio.c_cc[VEOL2]    = VDISABLE;
+XIF{VSWTCH}	m->tio.c_cc[VSWTCH]   = VDISABLE;
 XIF{VSTART}	m->tio.c_cc[VSTART]   = Ctrl('Q');
 XIF{VSTOP}	m->tio.c_cc[VSTOP]    = Ctrl('S');
 XIF{VSUSP}	m->tio.c_cc[VSUSP]    = Ctrl('Z');
@@ -361,11 +362,11 @@ IF{ECHOK}	m->tio.c_lflag |= ECHOK;
 XIF{VINTR}	m->tio.c_cc[VINTR]  = Ctrl('C');
 XIF{VQUIT}	m->tio.c_cc[VQUIT]  = Ctrl('\\');
 XIF{VERASE}	m->tio.c_cc[VERASE] = 0177; /* DEL */
-XIF{VKILL}	m->tio.c_cc[VKILL]  = Ctrl('H');
+XIF{VKILL}	m->tio.c_cc[VKILL]  = Ctrl('U');
 XIF{VEOF}	m->tio.c_cc[VEOF]   = Ctrl('D');
-XIF{VEOL}	m->tio.c_cc[VEOL]   = 0377;
-XIF{VEOL2}	m->tio.c_cc[VEOL2]  = 0377;
-XIF{VSWTCH}	m->tio.c_cc[VSWTCH] = 0000;
+XIF{VEOL}	m->tio.c_cc[VEOL]   = VDISABLE;
+XIF{VEOL2}	m->tio.c_cc[VEOL2]  = VDISABLE;
+XIF{VSWTCH}	m->tio.c_cc[VSWTCH] = VDISABLE;
 
   if (ttyflag)
    {
@@ -378,7 +379,7 @@ XIF{VSWTCH}	m->tio.c_cc[VSWTCH] = 0000;
   m->m_ttyb.sg_ispeed = B9600;
   m->m_ttyb.sg_ospeed = B9600;
   m->m_ttyb.sg_erase  = 0177; /*DEL */
-  m->m_ttyb.sg_kill   = Ctrl('H');
+  m->m_ttyb.sg_kill   = Ctrl('U');
   if (!ttyflag)
     m->m_ttyb.sg_flags = CRMOD | ECHO
 IF{ANYP}	| ANYP
@@ -1506,20 +1507,21 @@ CheckTtyname (tty)
 char *tty;
 {
   struct stat st;
-  char * real;
+  char realbuf[PATH_MAX];
+  const char *real;
   int rc;
 
-  real = realpath(tty, NULL);
+  real = realpath(tty, realbuf);
   if (!real)
     return -1;
+  realbuf[sizeof(realbuf)-1]='\0';
 
   if (lstat(real, &st) || !S_ISCHR(st.st_mode) ||
-    (st.st_nlink > 1 && strncmp(real, "/dev/", 5)))
+    (st.st_nlink > 1 && strncmp(real, "/dev", 4)))
     rc = -1;
   else
     rc = 0;
 
-  free(real);
   return rc;
 }
 

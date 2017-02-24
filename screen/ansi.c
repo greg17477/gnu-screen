@@ -12,7 +12,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
- *
+ *  
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -1582,7 +1582,7 @@ StringEnd()
       if (typ < 0 || typ > 2)
 	break;
 #endif
-
+      
       curr->w_stringp -= p - curr->w_string;
       if (curr->w_stringp > curr->w_string)
 	bcopy(p, curr->w_string, curr->w_stringp - curr->w_string);
@@ -1617,7 +1617,8 @@ StringEnd()
     case AKA:
       if (curr->w_title == curr->w_akabuf && !*curr->w_string)
 	break;
-      ChangeAKA(curr, curr->w_string, strlen(curr->w_string));
+      if (curr->w_dynamicaka)
+	ChangeAKA(curr, curr->w_string, strlen(curr->w_string));
       if (!*curr->w_string)
 	curr->w_autoaka = curr->w_y + 1;
       break;
@@ -2316,7 +2317,7 @@ RestorePosRendition()
   LSetRendition(&curr->w_layer, &curr->w_rend);
 }
 
-/* Send a terminal report as if it were typed. */
+/* Send a terminal report as if it were typed. */ 
 static void
 Report(fmt, n1, n2)
 char *fmt;
@@ -2502,13 +2503,13 @@ int n, ys, ye, bce;
     return;
   if (n > 0)
     {
+      if (ye - ys + 1 < n)
+	n = ye - ys + 1;
       if (n > 256)
 	{
 	  MScrollV(p, n - 256, ys, ye, bce);
 	  n = 256;
 	}
-      if (ye - ys + 1 < n)
-	n = ye - ys + 1;
 #ifdef COPY_PASTE
       if (compacthist)
 	{
@@ -2562,14 +2563,14 @@ int n, ys, ye, bce;
     }
   else
     {
-      if (n < -256)
-	{
-	  MScrollV(p, n + 256, ys, ye, bce);
-	  n = -256;
-	}
       n = -n;
       if (ye - ys + 1 < n)
 	n = ye - ys + 1;
+      if (n > 256)
+	{
+	  MScrollV(p, - (n - 256), ys, ye, bce);
+	  n = 256;
+	}
 
       ml = p->w_mlines + ye;
       /* Clear lines */
@@ -2880,7 +2881,7 @@ struct mline *ml;
   q = ml->attr; o = hml->attr; hml->attr = q; ml->attr = null;
   if (o != null)
     free(o);
-
+ 
 #ifdef FONT
   q = ml->font; o = hml->font; hml->font = q; ml->font = null;
   if (o != null)
@@ -3136,22 +3137,15 @@ int what;
 	{
 	  ox = D_x;
 	  oy = D_y;
-    for (cv = D_cvlist; cv; cv = cv->c_next)
-    {
-      if (inlstr || (inlstrh && p && p->w_hstatus && *p->w_hstatus && WindowChangedCheck(p->w_hstatus, what, (int *)0)))
-        WListUpdatecv(cv, (struct win *)0);
-      p = Layer2Window(cv->c_layer);
-      if (inwstr || (inwstrh && p && p->w_hstatus && *p->w_hstatus
-         && WindowChangedCheck(p->w_hstatus, what, (int *)0))) {
-         if (captiontop) {
-           if (cv->c_ys - 1 >= 0)
-             RefreshLine(cv->c_ys - 1, 0, D_width -1 , 0);
-         } else {
-           if (cv->c_ye + 1 < D_height)
-             RefreshLine(cv->c_ye + 1, 0, D_width - 1, 0);
-         }
-       }
-    }
+	  for (cv = D_cvlist; cv; cv = cv->c_next)
+	    {
+	      if (inlstr || (inlstrh && p && p->w_hstatus && *p->w_hstatus && WindowChangedCheck(p->w_hstatus, what, (int *)0)))
+		WListUpdatecv(cv, (struct win *)0);
+	      p = Layer2Window(cv->c_layer);
+	      if (inwstr || (inwstrh && p && p->w_hstatus && *p->w_hstatus && WindowChangedCheck(p->w_hstatus, what, (int *)0)))
+	        if (cv->c_ye + 1 < D_height)
+		  RefreshLine(cv->c_ye + 1, 0, D_width - 1, 0);
+	    }
 	  p = D_fore;
 	  if (inhstr || (inhstrh && p && p->w_hstatus && *p->w_hstatus && WindowChangedCheck(p->w_hstatus, what, (int *)0)))
 	    RefreshHStatus();
@@ -3182,15 +3176,8 @@ int what;
 	  if (Layer2Window(cv->c_layer) != p)
 	    continue;
 	  got = 1;
-     if (inwstr) {
-       if (captiontop) {
-         if (cv->c_ys -1 >= 0)
-           RefreshLine(cv->c_ys - 1, 0, D_width - 1, 0);
-       } else {
-         if (cv->c_ye + 1 < D_height)
-           RefreshLine(cv->c_ye + 1, 0, D_width - 1, 0);
-       }
-     }
+	  if (inwstr && cv->c_ye + 1 < D_height)
+	    RefreshLine(cv->c_ye + 1, 0, D_width - 1, 0);
 	}
       if (got && inhstr && p == D_fore)
 	RefreshHStatus();

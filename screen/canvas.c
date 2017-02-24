@@ -191,14 +191,9 @@ int x, y;
 
   for (cv = D_cvlist; cv; cv = cv->c_next)
     {
-   if (x >= cv->c_xs && x <= cv->c_xe) {
-     if (y >= cv->c_ys && y <= cv->c_ye)
-       return cv;
-     if (captiontop && y == cv->c_ys - 1)
-       return cv;
-     if (!captiontop && y == cv->c_ye + 1)
-       return cv;
-   }
+      /* ye + 1 because of caption line */
+      if (x >= cv->c_xs && x <= cv->c_xe && y >= cv->c_ys && y <= cv->c_ye + 1)
+	return cv;
       if (cv == D_forecv)
 	continue;
       m = 0;
@@ -374,14 +369,14 @@ int
 MakeDefaultCanvas()
 {
   struct canvas *cv;
-
+ 
   ASSERT(display);
   if ((cv = (struct canvas *)calloc(1, sizeof *cv)) == 0)
     return -1;
   cv->c_xs      = 0;
   cv->c_xe      = D_width - 1;
-  cv->c_ys = (D_has_hstatus == HSTATUS_FIRSTLINE) + captionalways * captiontop;
-  cv->c_ye = D_height - 1 - (D_has_hstatus == HSTATUS_LASTLINE) - captionalways * !captiontop;
+  cv->c_ys      = (D_has_hstatus == HSTATUS_FIRSTLINE);
+  cv->c_ye      = D_height - 1 - (D_has_hstatus == HSTATUS_LASTLINE) - captionalways;
   debug2("MakeDefaultCanvas 0,0 %d,%d\n", cv->c_xe, cv->c_ye);
   cv->c_xoff    = 0;
   cv->c_yoff    = 0;
@@ -569,13 +564,8 @@ struct canvas *cv;
 	      cv->c_slprev->c_slorient = SLICE_UNKN;
 	      if (!captionalways)
 		{
-         if (captiontop) {
-           cv->c_slback->c_ys--;
-           cv->c_slprev->c_ys--;
-         } else {
-           cv->c_slback->c_ye++;
-           cv->c_slprev->c_ye++;
-         }
+	          cv->c_slback->c_ye++;
+		  cv->c_slprev->c_ye++;
 		}
 	    }
 	  SetCanvasWindow(cv, 0);
@@ -710,12 +700,8 @@ int orient;
   xe = cv->c_slback->c_xe;
   ys = cv->c_slback->c_ys;
   ye = cv->c_slback->c_ye;
- if (!captionalways && cv == D_canvas.c_slperp && !cv->c_slnext) {
-   if (captiontop)
-     ys++; /* need space for caption */
-   else
-     ye--; /* need space for caption */
- }
+  if (!captionalways && cv == D_canvas.c_slperp && !cv->c_slnext)
+    ye--;	/* need space for caption */
   debug2("Adding Canvas to slice %d,%d ", xs, ys);
   debug2("%d,%d\n", xe, ye);
 
@@ -733,7 +719,6 @@ int orient;
   if ((cv = (struct canvas *)calloc(1, sizeof *cv)) == 0)
     return -1;
 
-  D_forecv->c_slback->c_ys = ys;  /* in case we modified it above */
   D_forecv->c_slback->c_ye = ye;	/* in case we modified it above */
   D_forecv->c_slorient = orient;	/* in case it was UNKN */
   cv->c_slnext = D_forecv->c_slnext;
@@ -773,11 +758,12 @@ int orient;
 void
 RemCanvas()
 {
-  int xs, xe, ys, ye;
+  int ye;
   struct canvas *cv;
 
   debug("RemCanvas\n");
   cv = D_forecv;
+  ye = cv->c_slback->c_ye;
   if (cv->c_slorient == SLICE_UNKN)
     return;
   while (cv->c_slprev)
@@ -792,10 +778,6 @@ RemCanvas()
       FreePerp(cv->c_slprev ? cv->c_slprev : cv->c_slnext);
       FreePerp(cv->c_slback);
     }
-  xs = cv->c_slback->c_xs;
-  xe = cv->c_slback->c_xe;
-  ys = cv->c_slback->c_ys;
-  ye = cv->c_slback->c_ye;
   /* free canvas */
   cv = D_forecv;
   D_forecv = cv->c_slprev;
@@ -811,12 +793,8 @@ RemCanvas()
   if (!cv->c_slnext && !cv->c_slprev && !cv->c_slback->c_slback && !cv->c_slperp)
     {
       cv->c_slorient = SLICE_UNKN;
-   if (!captionalways) {
-     if (captiontop)
-       cv->c_slback->c_ys = --ys;  /* caption line no longer needed */
-     else
-       cv->c_slback->c_ye = ++ye;  /* caption line no longer needed */
-   }
+      if (!captionalways)
+	cv->c_slback->c_ye = ++ye;	/* caption line no longer needed */
     }
   cv = cv->c_slback;
   EqualizeCanvas(cv->c_slperp, 0);
@@ -858,12 +836,8 @@ OneCanvas()
   cv->c_slnext = 0;
   cv->c_slprev = 0;
   ASSERT(!cv->c_slperp);
- if (!captionalways) {
-   if (captiontop)
-     D_canvas.c_ys--;  /* caption line no longer needed */
-   else
-     D_canvas.c_ye++;  /* caption line no longer needed */
- }
+  if (!captionalways)
+    D_canvas.c_ye++;	/* caption line no longer needed */
   ResizeCanvas(&D_canvas);
   RecreateCanvasChain();
   RethinkDisplayViewports();

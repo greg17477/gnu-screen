@@ -51,6 +51,13 @@
 # define dirent direct
 #endif
 
+#ifndef CMSG_LEN
+#define CMSG_LEN(length) ((_CMSG_DATA_ALIGN(sizeof(struct cmsghdr))) + (length))
+#endif
+#ifndef CMSG_SPACE
+#define CMSG_SPACE(length) ((_CMSG_DATA_ALIGN(sizeof(struct cmsghdr))) + (_CMSG_DATA_ALIGN(length)))
+#endif
+
 #include "extern.h"
 #include "list_generic.h"
 
@@ -695,8 +702,8 @@ struct NewWindow *nwin;
       return;
     }
   if (nwin->term != nwin_undef.term)
-    strncpy(m.m.create.screenterm, nwin->term, 19);
-  m.m.create.screenterm[19] = '\0';
+    strncpy(m.m.create.screenterm, nwin->term, MAXTERMLEN);
+  m.m.create.screenterm[MAXTERMLEN] = '\0';
   m.protocol_revision = MSG_REVISION;
   debug1("SendCreateMsg writing '%s'\n", m.m.create.line);
   if (write(s, (char *) &m, sizeof m) != sizeof m)

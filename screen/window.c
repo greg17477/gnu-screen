@@ -126,6 +126,7 @@ struct NewWindow nwin_undef   =
   (char *)0,	/* dir */
   (char *)0,	/* term */
   -1,		/* aflag */
+  -1,		/* dynamicaka */
   -1,		/* flowflag */
   -1,		/* lflag */
   -1,		/* histheight */
@@ -152,6 +153,7 @@ struct NewWindow nwin_default =
   0, 		/* dir */
   screenterm, 	/* term */
   0, 		/* aflag */
+  1,		/* dynamicaka */
   1*FLOW_NOW,	/* flowflag */
   LOGINDEFAULT, /* lflag */
   DEFAULTHISTHEIGHT, 	/* histheight */
@@ -185,6 +187,7 @@ struct NewWindow *def, *new, *res;
   COMPOSE(dir);
   COMPOSE(term);
   COMPOSE(aflag);
+  COMPOSE(dynamicaka);
   COMPOSE(flowflag);
   COMPOSE(lflag);
   COMPOSE(histheight);
@@ -684,6 +687,7 @@ struct NewWindow *newwin;
 #endif
   p->w_ptyfd = f;
   p->w_aflag = nwin.aflag;
+  p->w_dynamicaka = nwin.dynamicaka;
   p->w_flow = nwin.flowflag | ((nwin.flowflag & FLOW_AUTOFLAG) ? (FLOW_AUTO|FLOW_NOW) : FLOW_AUTO);
   if (!nwin.aka)
     nwin.aka = Filename(nwin.args[0]);
@@ -1206,7 +1210,7 @@ struct win *win;
 char **args, *ttyn;
 {
   int pid;
-  char tebuf[25];
+  char tebuf[MAXTERMLEN + 5 + 1]; /* MAXTERMLEN + strlen("TERM=") + '\0' */
   char ebuf[20];
   char shellbuf[7 + MAXPATHLEN];
   char *proc;
@@ -1438,11 +1442,11 @@ char **args, *ttyn;
       NewEnv[4] = shellbuf;
       debug1("ForkWindow: NewEnv[4] = '%s'\n", shellbuf);
       if (win->w_term && *win->w_term && strcmp(screenterm, win->w_term) &&
-	  (strlen(win->w_term) < 20))
+	  (strlen(win->w_term) < MAXTERMLEN))
 	{
 	  char *s1, *s2, tl;
 
-	  sprintf(tebuf, "TERM=%s", win->w_term);
+	  snprintf(tebuf, sizeof(tebuf), "TERM=%s", win->w_term);
 	  debug2("Makewindow %d with %s\n", win->w_number, tebuf);
 	  tl = strlen(win->w_term);
 	  NewEnv[1] = tebuf;
@@ -1458,7 +1462,7 @@ char **args, *ttyn;
 		}
 	    }
 	}
-      sprintf(ebuf, "WINDOW=%d", win->w_number);
+      snprintf(ebuf, sizeof(ebuf), "WINDOW=%d", win->w_number);
       NewEnv[3] = ebuf;
 
       if (*proc == '-')

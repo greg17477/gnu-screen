@@ -72,7 +72,7 @@ char Termcap[TERMCAP_BUFSIZE + 8];	/* new termcap +8:"TERMCAP=" */
 static int Termcaplen;
 static int tcLineLen;
 char Term[MAXSTR+5];		/* +5: "TERM=" */
-char screenterm[20];		/* new $TERM, usually "screen" */
+char screenterm[MAXTERMLEN + 1];	/* new $TERM, usually "screen" */
 
 char *extra_incap, *extra_outcap;
 
@@ -389,11 +389,11 @@ int he;
     {
       /* init with default string first */
       s = "l+m+k+j+u+t+v+w+q-x|n+o~s_p\"r#`+a:f'g#~o.v-^+<,>h#I#0#y<z>";
-      for (i = strlen(s) & ~1; i >= 0; i -= 2)
+      for (i = (strlen(s) - 2) & ~1; i >= 0; i -= 2)
 	D_c0_tab[(int)(unsigned char)s[i]] = s[i + 1];
     }
   if (D_CC0)
-    for (i = strlen(D_CC0) & ~1; i >= 0; i -= 2)
+    for (i = (strlen(D_CC0) - 2) & ~1; i >= 0; i -= 2)
       D_c0_tab[(int)(unsigned char)D_CC0[i]] = D_CC0[i + 1];
   debug1("ISO2022 = %d\n", D_CG0);
 #endif /* FONT */
@@ -883,7 +883,8 @@ int aflag;
   if (*screenterm == '\0' || strlen(screenterm) > MAXSTR - 3)
     {
       debug("MakeTermcap sets screenterm=screen\n");
-      strcpy(screenterm, "screen");
+      strncpy(screenterm, "screen", MAXTERMLEN);
+      screenterm[MAXTERMLEN] = '\0';
     }
 #if 0
   found = 1;
