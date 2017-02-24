@@ -128,7 +128,7 @@ and ISO 2022 standards (e.g. insert/delete line and support for multiple
 character sets).  There is a scrollback history buffer for each virtual
 terminal and a copy-and-paste mechanism that allows the user to move
 text regions between windows.
- 
+
 When @code{screen} is called, it creates a single window with a shell in
 it (or the specified command) and then gets out of your way so that you
 can use the program as you normally would.  Then, at any time, you can
@@ -166,8 +166,8 @@ creates a new window running a shell and switches to that window
 immediately, regardless of the state of the process running in the
 current window.  Similarly, you can create a new window with a custom
 command in it by first binding the command to a keystroke (in your
-@file{.screenrc} file or at the @kbd{C-a :} command line) and then using it 
-just like the @kbd{C-a c} command.  In addition, new windows can be created by 
+@file{.screenrc} file or at the @kbd{C-a :} command line) and then using it
+just like the @kbd{C-a c} command.  In addition, new windows can be created by
 running a command like:
 
 @example
@@ -178,7 +178,7 @@ screen emacs prog.c
 from a shell prompt within a previously created window.  This will not
 run another copy of @code{screen}, but will instead supply the command
 name and its arguments to the window manager (specified in the $STY environment
-variable) who will use it to create the new window.  The above example would 
+variable) who will use it to create the new window.  The above example would
 start the @code{emacs} editor (editing @file{prog.c}) and switch to its window.
 - Note that you cannot transport environment variables from
 the invoking shell to the application (emacs in this case), because it is
@@ -257,25 +257,25 @@ Do not start @code{screen}, but instead detach a @code{screen} session
 running elsewhere (@pxref{Detach}).  @samp{-d} has the same effect as
 typing @kbd{C-a d} from the controlling terminal for the session.
 @samp{-D} is the equivalent to the power detach key.  If no session can
-be detached, this option is ignored.  In combination with the 
+be detached, this option is ignored.  In combination with the
 @code{-r}/@code{-R} option more powerful effects can be achieved:
 
 @table @code
 @item -d -r
 Reattach a session and if necessary detach it first.
-@item -d -R   
+@item -d -R
 Reattach a session and if necessary detach  or  even create it first.
-@item -d -RR  
+@item -d -RR
 Reattach a session and if necessary detach or create it.
 Use the first session if more than one session is available.
-@item -D -r   
+@item -D -r
 Reattach a session. If necessary detach  and  logout remotely first.
-@item -D -R   
-Attach here and now. In detail this means: If a session  is running, 
+@item -D -R
+Attach here and now. In detail this means: If a session  is running,
 then reattach. If necessary detach and logout remotely first.  If it
 was not running create it and notify the user.
 This is the author's favorite.
-@item -D -RR  
+@item -D -RR
 Attach here and now. Whatever that  means, just do it.
 @end table
 
@@ -291,7 +291,7 @@ sets the default command character. In a multiuser session all users
 added will start off with this command character. But when attaching
 to an already running session, this option only changes the command
 character of the attaching user.
-This option is equivalent to the commands @code{defescape} or 
+This option is equivalent to the commands @code{defescape} or
 @code{escape} respectively.  (@pxref{Command Character}).
 
 @item -f
@@ -324,11 +324,11 @@ identification strings (usually of the form @var{pid.tty.host};
 with @code{screen -r}.  Those marked @samp{attached} are running and
 have a controlling terminal.  If the session runs in multiuser mode,
 it is marked @samp{multi}.  Sessions marked as @samp{unreachable} either
-live on a different host or are dead. 
+live on a different host or are dead.
 An unreachable session is considered dead, when its name matches either the
 name of the local host, or the specified parameter, if any.
 See the @code{-r} flag for a description how to construct matches.
-Sessions marked as @samp{dead} should be thoroughly checked and removed.  
+Sessions marked as @samp{dead} should be thoroughly checked and removed.
 Ask your system administrator if you are not sure.
 Remove sessions with the @samp{-wipe} option.
 
@@ -359,7 +359,7 @@ a new process. The command exits if the session terminates.
 @item -O
 Select a more optimal output mode for your terminal rather than true VT100
 emulation (only affects auto-margin  terminals  without @samp{LP}). This
-can also be set in your @file{.screenrc} by specifying @samp{OP} in the 
+can also be set in your @file{.screenrc} by specifying @samp{OP} in the
 @code{termcap} command.
 
 @item -p @var{name_or_number}|-|=|+
@@ -372,13 +372,13 @@ create new window. The command will not be executed if the specified
 window could not be found.
 
 @item -q
-Suppress printing of error messages. In combination with @samp{-ls} the exit 
-value is set as follows: 9 indicates a directory without sessions. 10 
-indicates a directory with running but not attachable sessions. 11 (or more) 
+Suppress printing of error messages. In combination with @samp{-ls} the exit
+value is set as follows: 9 indicates a directory without sessions. 10
+indicates a directory with running but not attachable sessions. 11 (or more)
 indicates 1 (or more) usable sessions.
-In combination with @samp{-r} the exit value is as follows: 10 indicates that 
-there is no session to resume. 12 (or more) indicates that there are 2 (or 
-more) sessions to resume and you should specify which one to choose. 
+In combination with @samp{-r} the exit value is as follows: 10 indicates that
+there is no session to resume. 12 (or more) indicates that there are 2 (or
+more) sessions to resume and you should specify which one to choose.
 In all other cases @samp{-q} has no effect.
 
 @item -Q
@@ -401,7 +401,7 @@ The commands that can be queried now are:
 @item -r [@var{pid.sessionname}]
 @itemx -r @var{sessionowner}/[@var{pid.sessionname}]
 Resume a detached @code{screen} session.  No other options (except
-combinations with @samp{-d} or @samp{-D}) may be specified, though 
+combinations with @samp{-d} or @samp{-D}) may be specified, though
 the session name
 (@pxref{Session Name}) may be needed to distinguish between multiple
 detached @code{screen} sessions.
@@ -420,7 +420,7 @@ session exists, start a new session using the specified options, just as
 if @samp{-R} had not been specified.  This option is set by default if
 screen is run as a login-shell (actually screen uses @samp{-xRR} in
 that case).
-For combinations with the 
+For combinations with the
 @samp{-D}/@samp{-d} option see there.
 
 @item -s @var{program}
@@ -455,15 +455,15 @@ Print the version number.
 
 @item -wipe [@var{match}]
 List available screens like @code{screen -ls}, but remove destroyed
-sessions instead of marking them as @samp{dead}. 
-An unreachable session is considered dead, when its name matches either 
+sessions instead of marking them as @samp{dead}.
+An unreachable session is considered dead, when its name matches either
 the name of the local host, or the explicitly given parameter, if any.
 See the @code{-r} flag for a description how to construct matches.
 
 @item -x
 Attach to a session which is already attached elsewhere (multi-display
-mode). 
-@code{Screen} refuses to attach from within itself. 
+mode).
+@code{Screen} refuses to attach from within itself.
 But when cascading multiple screens, loops are not detected; take care.
 
 
@@ -496,12 +496,12 @@ to be executed at startup, or on the fly using the @code{colon} command.
 @cindex screenrc
 When @code{screen} is invoked, it executes initialization commands from
 the files @file{.screenrc} in the user's home directory and
-@file{/usr/local/etc/screenrc}.  These defaults can be overridden in the 
+@file{/usr/local/etc/screenrc}.  These defaults can be overridden in the
 following ways:
 For the global screenrc file @code{screen} searches for the environment
 variable @code{$SYSSCREENRC} (this override feature may be disabled at
 compile-time).  The user specific screenrc file is
-searched for in @code{$SCREENRC}, then 
+searched for in @code{$SCREENRC}, then
 @file{@code{$HOME}/.screenrc}.  The command line option @samp{-c}
 specifies which file to use (@pxref{Invoking Screen}.  Commands in these
 files are used to set options, bind commands to keys, and to
@@ -514,7 +514,7 @@ Unintelligible lines are warned about and ignored.  Commands may contain
 references to environment variables.  The syntax is the shell-like
 @code{$VAR} or @code{$@{VAR@}}.  Note that this causes incompatibility
 with previous @code{screen} versions, as now the '$'-character has to be
-protected with '\' if no variable substitution is intended. A string in 
+protected with '\' if no variable substitution is intended. A string in
 single-quotes is also protected from variable substitution.
 
 Two configuration files are shipped as examples with your screen
@@ -543,7 +543,7 @@ Customization can also be done online, with this command:
 
 @kindex :
 @deffn Command colon
-(@kbd{C-a :})@* 
+(@kbd{C-a :})@*
 Allows you to enter @file{.screenrc} command lines.  Useful for
 on-the-fly modification of key bindings, specific window creation and
 changing settings.  Note that the @code{set} keyword no longer exists,
@@ -615,14 +615,14 @@ Switch the input focus to the next region.  @xref{Regions}.
 
 @item @kbd{C-a C-a}
 (other)@*
-Toggle to the window displayed previously.  If this window does no 
+Toggle to the window displayed previously.  If this window does no
 longer exist, @code{other} has the same effect as @code{next}.
 @xref{Selecting}.
 
 @item @kbd{C-a a}
 (meta)@*
 Send the command character (C-a) to window. See @code{escape} command.
-@xref{Command Character}. 
+@xref{Command Character}.
 
 @item @kbd{C-a A}
 (title)@*
@@ -678,7 +678,7 @@ Write a hardcopy of the current window to the file ``hardcopy.@var{n}''.
 @xref{Hardcopy}.
 
 @item @kbd{C-a H}
-(log)@* 
+(log)@*
 Toggle logging of the current window to the file ``screenlog.@var{n}''.
 @xref{Log}.
 
@@ -791,7 +791,7 @@ Suspend @code{screen}.  @xref{Suspend}.
 
 @item @kbd{C-a Z}
 (reset)@*
-Reset the virtual terminal to its ``power-on'' values.  
+Reset the virtual terminal to its ``power-on'' values.
 @xref{Reset}.
 
 @item @kbd{C-a .}
@@ -860,7 +860,7 @@ Show the listing of attached displays.  @xref{Displays}.
 
 @node Command Summary,  , Default Key Bindings, Commands
 @section Command Summary
-@cindex command summary 
+@cindex command summary
 
 @table @code
 @item acladd @var{usernames}
@@ -1305,8 +1305,8 @@ affect all the windows you create interactively.
 Establish a new window.  The flow-control options (@samp{-f}, @samp{-fn}
 and @samp{-fa}), title option (@samp{-t}), login options
 (@samp{-l} and @samp{-ln}) , terminal type option (@samp{-T @var{term}}),
-the all-capability-flag (@samp{-a}) and scrollback option 
-(@samp{-h @var{num}}) may be specified with each command. 
+the all-capability-flag (@samp{-a}) and scrollback option
+(@samp{-h @var{num}}) may be specified with each command.
 The option (@samp{-M}) turns monitoring on for this window.
 The option (@samp{-L}) turns output logging on for this window.
 If an optional number @var{n} in the range 0@dots{}MAXWIN-1 is given,
@@ -1363,7 +1363,7 @@ Unset an environment variable.
 Set the command to be used to create a new shell.  This overrides the
 value of the environment variable @code{$SHELL}.  This is useful if
 you'd like to run a tty-enhancer which is expecting to execute the
-program specified in @code{$SHELL}.  
+program specified in @code{$SHELL}.
 If the command begins with a @samp{-} character, the shell will be started as a
 login-shell. Typical shells do only minimal initialization when not started as a login-shell.
 E.g. Bash will not read your @file{~/.bashrc} unless it is a login-shell.
@@ -1443,13 +1443,13 @@ For tty windows, the @code{info} command shows some of the modem
 control lines in the status line.
 These may include @samp{RTS}, @samp{CTS}, @samp{DTR}, @samp{CD} and
 more. This depends rather on on the available @code{ioctl()}'s and system
-header files than on the physical capabilities of the serial board. 
-The name of a logical low (inactive) signal is preceded by an 
+header files than on the physical capabilities of the serial board.
+The name of a logical low (inactive) signal is preceded by an
 exclamation mark (@samp{!}), otherwise the signal is logical high (active).
 Unsupported but shown signals are usually shown low.
-When the @code{CLOCAL} status bit is true, the whole set of modem signals is 
+When the @code{CLOCAL} status bit is true, the whole set of modem signals is
 placed inside curly braces (@samp{@{} and @samp{@}}).
-When the @code{CRTSCTS} or @code{TIOCSOFTCAR} bit is true, the signals 
+When the @code{CRTSCTS} or @code{TIOCSOFTCAR} bit is true, the signals
 @samp{CTS} or @samp{CD} are shown in parenthesis, respectively.
 
 For tty windows, the command @code{break} causes the Data transmission
@@ -1499,12 +1499,12 @@ For telnet windows, the command @code{break} sends the telnet code
 Screen provides a method for grouping windows together. Windows can be
 organized in a hierarchical fashion, resembling a tree structure. New
 screens are created using the @code{screen} command while new groups
-are created using @code{screen //group}. @xref{Screen Command}. 
+are created using @code{screen //group}. @xref{Screen Command}.
 
 Once a new group is created, it will act as a container for windows
 and even other groups. When a group is selected, you will see the
 output of the @code{windowlist} command, allowing you to select a
-window inside. If there are no windows inside a group, use the 
+window inside. If there are no windows inside a group, use the
 @code{screen} command to create one. Once inside a group, using the
 commands @code{next} and @code{prev} will switch between windows only
 in that group. Using the @code{windowlist} command will give you the
@@ -1518,7 +1518,7 @@ the destination group. Without specifying a group, the title of the
 current group is displayed.
 @end deffn
 
-Using groups in combination with layouts will help create a 
+Using groups in combination with layouts will help create a
 multi-desktop experience. One group can be assigned for each
 layout made. Windows can be made, split, and organized within each
 group as desired. Afterwhich, switching between groups can be as easy
@@ -1567,7 +1567,7 @@ Switch to the previous window (the opposite of @kbd{C-a n}).
 (@kbd{C-a C-a})@*
 Switch to the last window displayed.  Note that this command
 defaults to the command character typed twice, unless overridden.
-For instance, if you use the option @samp{-e]x}, 
+For instance, if you use the option @samp{-e]x},
 this command becomes @kbd{]]} (@pxref{Command Character}).
 @end deffn
 
@@ -1578,7 +1578,7 @@ this command becomes @kbd{]]} (@pxref{Command Character}).
 @deffn Command select [n @var{|-|.}]
 (@kbd{C-a @var{n}}, @kbd{C-a '})@*
 Switch to the window with the number @var{n}.
-If no window number is specified, you get prompted for an 
+If no window number is specified, you get prompted for an
 identifier. This can be a window name (title) or a number.
 When a new window is established, the lowest available number
 is assigned to this window.
@@ -1753,7 +1753,7 @@ logout if @code{screen} was started from your login-shell.
 @deffn Command pow_detach_msg [message]
 (none)@*
 The @var{message} specified here is output whenever a power detach is
-performed. It may be used as a replacement for a logout message or to reset 
+performed. It may be used as a replacement for a logout message or to reset
 baud rate, etc.
 Without a parameter, the current message is shown.
 @end deffn
@@ -1780,12 +1780,12 @@ unlocked shell. This feature should rather be called
 
 @node Multiuser Session, Session Name, Lock, Session Management
 @section Multiuser Session
-@cindex multiuser session 
+@cindex multiuser session
 
 These commands allow other users to gain access to one single @code{screen}
-session. When attaching to a multiuser @code{screen} the sessionname is 
+session. When attaching to a multiuser @code{screen} the sessionname is
 specified as @code{username/sessionname} to the @code{-S} command line option.
-@code{Screen} must be compiled with multiuser support to enable features 
+@code{Screen} must be compiled with multiuser support to enable features
 described here.
 
 @menu
@@ -1805,10 +1805,10 @@ described here.
 @subsection Multiuser
 @deffn Command multiuser @var{state}
 (none)@*
-Switch between single-user and multi-user mode. Standard screen operation is 
-single-user. In multi-user mode the commands @code{acladd}, @code{aclchg} and 
-@code{acldel} can be used to enable (and disable) other users accessing this 
-@code{screen}.  
+Switch between single-user and multi-user mode. Standard screen operation is
+single-user. In multi-user mode the commands @code{acladd}, @code{aclchg} and
+@code{acldel} can be used to enable (and disable) other users accessing this
+@code{screen}.
 @end deffn
 
 @node Acladd, Aclchg, Multiuser, Multiuser Session
@@ -1816,11 +1816,11 @@ single-user. In multi-user mode the commands @code{acladd}, @code{aclchg} and
 @deffn Command acladd @var{usernames}
 @deffnx Command addacl @var{usernames}
 (none)@*
-Enable users to fully access this screen session. @var{Usernames} can be one 
+Enable users to fully access this screen session. @var{Usernames} can be one
 user or a comma separated list of users. This command enables to attach to
 the @code{screen} session and performs the equivalent of
 @code{aclchg @var{usernames} +rwx "#?"}. To add a user with restricted access,
-use the @code{aclchg} command below. 
+use the @code{aclchg} command below.
 @code{Addacl} is a synonym to @code{acladd}.
 Multi-user mode only.
 @end deffn
@@ -1830,22 +1830,22 @@ Multi-user mode only.
 @deffn Command aclchg @var{usernames permbits list}
 @deffnx Command chacl @var{usernames permbits list}
 (none)@*
-Change permissions for a comma separated list of users. 
-Permission bits are represented as @samp{r}, @samp{w} and @samp{x}. 
-Prefixing @samp{+} grants the permission, @samp{-} removes it. The third 
-parameter is a comma separated list of commands or windows (specified either 
-by number or title). The special list @samp{#} refers to all windows, @samp{?} 
-to all commands. If @var{usernames} consists of a single @samp{*}, all 
-known users are affected. 
+Change permissions for a comma separated list of users.
+Permission bits are represented as @samp{r}, @samp{w} and @samp{x}.
+Prefixing @samp{+} grants the permission, @samp{-} removes it. The third
+parameter is a comma separated list of commands or windows (specified either
+by number or title). The special list @samp{#} refers to all windows, @samp{?}
+to all commands. If @var{usernames} consists of a single @samp{*}, all
+known users are affected.
 A command can be executed when the user has the @samp{x} bit for it. The user
 can type input to a window when he has its @samp{w} bit set and no other
 user obtains a writelock for this window. Other bits are currently ignored.
 To withdraw the writelock from another user in e.g. window 2:
-@samp{aclchg @var{username} -w+w 2}. To allow read-only access 
-to the session: @samp{aclchg @var{username} -w "#"}. As soon as a user's name 
-is known to screen, he can attach to the session and (per default) has full 
-permissions for all command and windows. Execution permission for the acl 
-commands, @code{at} and others should also be removed or the user may be able 
+@samp{aclchg @var{username} -w+w 2}. To allow read-only access
+to the session: @samp{aclchg @var{username} -w "#"}. As soon as a user's name
+is known to screen, he can attach to the session and (per default) has full
+permissions for all command and windows. Execution permission for the acl
+commands, @code{at} and others should also be removed or the user may be able
 to regain write permission.
 @code{Chacl} is a synonym to @code{aclchg}.
 Multi-user mode only.
@@ -2214,13 +2214,13 @@ Note that there are several subcommands to @code{layout}.
 
 @deffn Command layout @code{new} [title]
 (none)@*
-Create a new layout. The screen will change to one whole region 
-and be switched to the blank window. From here, you build the 
-regions and the windows they show as you desire. The new layout 
-will be numbered with the smallest available integer, starting 
-with zero. You can optionally give a title to your new layout. 
-Otherwise, it will have a default title of @code{layout}. You 
-can always change the title later by using the command 
+Create a new layout. The screen will change to one whole region
+and be switched to the blank window. From here, you build the
+regions and the windows they show as you desire. The new layout
+will be numbered with the smallest available integer, starting
+with zero. You can optionally give a title to your new layout.
+Otherwise, it will have a default title of @code{layout}. You
+can always change the title later by using the command
 @code{layout title}.
 @end deffn
 
@@ -2379,7 +2379,7 @@ name when typed.  You can also bind predefined names to keys with the
 @kindex A
 @deffn Command title [windowtitle]
 (@kbd{C-a A})@*
-Set the name of the current window to @var{windowtitle}. If no name is 
+Set the name of the current window to @var{windowtitle}. If no name is
 specified, screen prompts for one.
 @end deffn
 
@@ -2520,12 +2520,12 @@ output. This command is only available if the host supports the ioctl
 (@kbd{C-a k}, @kbd{C-a C-k})@*
 Kill the current window.@*
 If there is an @code{exec} command running (@pxref{Exec}) then it is killed.
-Otherwise the process (e.g. shell) running in the window receives a 
-@code{HANGUP} condition, 
+Otherwise the process (e.g. shell) running in the window receives a
+@code{HANGUP} condition,
 the window structure is removed and screen (your display) switches to another
 window. When the last window is destroyed, @code{screen} exits.
 After a kill screen switches to the previously displayed window.
-@* 
+@*
 @emph{Caution}: @code{emacs} users may find themselves killing their
 @code{emacs} session when trying to delete the current line.  For this
 reason, it is probably wise to use a different command character
@@ -2550,7 +2550,7 @@ compile time (@pxref{Installation}). Both commands are only present when
 Adds or removes the entry in @file{/etc/utmp} for the current window.
 This controls whether or not the window is @dfn{logged in}.  In addition
 to this toggle, it is convenient to have ``log in'' and ``log out''
-keys.  For instance, @code{bind I login on} and @code{bind O 
+keys.  For instance, @code{bind I login on} and @code{bind O
 login off} will map these keys to be @kbd{C-a I} and @kbd{C-a O}
 (@pxref{Key Binding}).
 @end deffn
@@ -2561,7 +2561,7 @@ login off} will map these keys to be @kbd{C-a I} and @kbd{C-a O}
 (none)@*
 The mode of each newly allocated pseudo-tty is set to @var{mode}.
 @var{mode} is an octal number as used by chmod(1).  Defaults to 0622 for
-windows which are logged in, 0600 for others (e.g. when @code{-ln} was 
+windows which are logged in, 0600 for others (e.g. when @code{-ln} was
 specified for creation, @pxref{Screen Command}).
 @end deffn
 
@@ -2606,7 +2606,7 @@ the window-status display (@pxref{Windows}).  Monitoring defaults to
 @kindex _
 @deffn Command silence [@var{state}|@var{sec}]
 (@kbd{C-a _})@*
-Toggles silence monitoring of windows. When silence is turned on and an 
+Toggles silence monitoring of windows. When silence is turned on and an
 affected window is switched into the background, you will receive the
 silence notification message in the status line after a specified period
 of inactivity (silence). The default timeout can be changed with the
@@ -2634,18 +2634,18 @@ before displaying a message. Default is 30 seconds.
 (@kbd{C-a w}, @kbd{C-a C-w})@*
 Uses the message line to display a list of all the windows.  Each
 window is listed by number with the name of the program running in the
-window (or its title). 
+window (or its title).
 
 The current window is marked with a @samp{*};
-the previous window is marked with a @samp{-}; 
+the previous window is marked with a @samp{-};
 all the windows that are logged in are marked with a @samp{$} (@pxref{Login});
 a background window that has received a bell is marked with a @samp{!};
-a background window that is being monitored and has had activity occur is 
+a background window that is being monitored and has had activity occur is
 marked with an @samp{@@} (@pxref{Monitor});
 a window which has output logging turned on is marked with @samp{(L)};
 windows occupied by other users are marked with @samp{&}
 or @samp{&&} if the window is shared by other users;
-windows in the zombie state are marked with @samp{Z}. 
+windows in the zombie state are marked with @samp{Z}.
 
 If this list is too long to fit on the terminal's status line only the
 portion around the current window is displayed.
@@ -2700,7 +2700,7 @@ or @var{off}, the current state is displayed. The default state
 is determined by the @code{defmousetrack} command.
 @end deffn
 
-@deffn Command defmousetrack @code{on|off} 
+@deffn Command defmousetrack @code{on|off}
 (none)@*
 This command determines the default state of the @code{mousetrack}
 command, currently defaulting of @var{off}.
@@ -2711,7 +2711,7 @@ command, currently defaulting of @var{off}.
 
 Each window in a @code{screen} session emulates a VT100 terminal, with
 some extra functions added. The VT100 emulator is hard-coded, no other
-terminal types can be emulated. 
+terminal types can be emulated.
 The commands described here modify the terminal emulation.
 
 @menu
@@ -2958,7 +2958,7 @@ Keypad enter         fe         stuff \015
 @section Digraph
 
 @kindex C-v
-@deffn Command digraph [preset [unicode-value]] 
+@deffn Command digraph [preset [unicode-value]]
 (@kbd{C-a C-v})@*
 This command prompts the user for a digraph sequence. The next
 two characters typed are looked up in a builtin table and the
@@ -3151,7 +3151,7 @@ The following table is the builtin sequences.
      '"', '|'    246       ö            U+00F6
      '"', '@}'    252       ü            U+00FC
      '"', '~'    223       ß            U+00DF
-@end example 
+@end example
 
 @end deffn
 
@@ -3180,13 +3180,13 @@ Without a parameter, the current message is shown.
 @kindex C-g
 @deffn Command vbell [state]
 (@kbd{C-a C-g})@*
-Sets or toggles the visual bell setting for the current window. If 
+Sets or toggles the visual bell setting for the current window. If
 @code{vbell} is switched to @samp{on}, but your
 terminal does not support a visual bell, the visual bell message is
-displayed in the status line when the bell character is received. 
-Visual bell support of a terminal is 
-defined by the termcap variable @code{vb}. @xref{Bell, , Visual Bell, 
-termcap, The Termcap Manual}, for more information on visual bells. 
+displayed in the status line when the bell character is received.
+Visual bell support of a terminal is
+defined by the termcap variable @code{vb}. @xref{Bell, , Visual Bell,
+termcap, The Termcap Manual}, for more information on visual bells.
 The equivalent terminfo capability is @code{flash}.
 
 Per  default, @code{vbell} is @samp{off}, thus the audible bell is used.
@@ -3224,7 +3224,7 @@ Clears the screen and saves its contents to the scrollback buffer.
 Uses the message line to display some information about the current
 window: the cursor position in the form @samp{(@var{column},@var{row})}
 starting with @samp{(1,1)}, the terminal width and height plus the size
-of the scrollback buffer in lines, like in @samp{(80,24)+50}, 
+of the scrollback buffer in lines, like in @samp{(80,24)+50},
 the current state of window XON/XOFF flow control is shown like this
 (@pxref{Flow Control}):
 @example
@@ -3242,10 +3242,10 @@ not) is also shown. The flags @samp{ins}, @samp{org}, @samp{app}, @samp{log},
 origin mode, application-keypad mode, has output logging,
 activity monitoring or partial redraw enabled.
 
-The currently active 
+The currently active
 character set (@samp{G0}, @samp{G1}, @samp{G2}, or @samp{G3}), and in
 square brackets the terminal character sets that are currently
-designated as @samp{G0} through @samp{G3}.  
+designated as @samp{G0} through @samp{G3}.
 If the window is in UTF-8 mode, the string @samp{UTF-8} is shown instead.
 Additional modes depending on the type of the window are displayed at
 the end of the status line (@pxref{Window Types}).
@@ -3268,11 +3268,11 @@ why features like color or the alternate charset don't work.
 @deffn Command allpartial state
 (none)@*
 If set to on, only the current cursor line is refreshed on window change.
-This affects all windows and is useful for slow terminal lines. The 
+This affects all windows and is useful for slow terminal lines. The
 previous setting of full/partial refresh for each window is restored
 with @code{allpartial off}. This is a global flag that immediately takes effect
-on all windows overriding the @code{partial} settings. It does not change the 
-default redraw behavior of newly created windows. 
+on all windows overriding the @code{partial} settings. It does not change the
+default redraw behavior of newly created windows.
 @end deffn
 
 @deffn Command altscreen state
@@ -3286,8 +3286,8 @@ just like in xterm.  Initial setting is @samp{off}.
 Defines whether the display should be refreshed (as with
 @code{redisplay}) after switching to the current window. This command
 only affects the current window.  To immediately affect all windows use the
-@code{allpartial} command.  Default is @samp{off}, of course.  This default is 
-fixed, as there is currently no @code{defpartial} command. 
+@code{allpartial} command.  Default is @samp{off}, of course.  This default is
+fixed, as there is currently no @code{defpartial} command.
 @end deffn
 
 @kindex l
@@ -3315,8 +3315,8 @@ previous line.  Default is @samp{on}. Without any options, the state of
 
 @deffn Command defwrap state
 (none) @*
-Same as the @code{wrap} command except that the default setting for new 
-windows is changed. Initially line-wrap is on and can be toggled with the 
+Same as the @code{wrap} command except that the default setting for new
+windows is changed. Initially line-wrap is on and can be toggled with the
 @code{wrap} command (@kbd{C-a r}) or by means of "C-a : wrap on|off".
 @end deffn
 
@@ -3358,10 +3358,10 @@ argument is given it toggles between 24 and 42 lines display.
 (none)@*
 Change c1 code processing. @samp{c1 on} tells screen to treat
 the input characters between 128 and 159 as control functions.
-Such an 8-bit code is normally the same as ESC followed by the 
-corresponding 7-bit code. The default setting is to process c1 
+Such an 8-bit code is normally the same as ESC followed by the
+corresponding 7-bit code. The default setting is to process c1
 codes and can be changed with the @samp{defc1} command.
-Users with fonts that have usable characters in the 
+Users with fonts that have usable characters in the
 c1 positions may want to turn this off.
 
 @end deffn
@@ -3568,7 +3568,7 @@ users.
 If your terminal sends characters, that cause you to abort copy mode,
 then this command may help by binding these characters to do nothing.
 The no-op character is `@@' and is used like this: @code{markkeys @@=L=H}
-if you do not want to use the `H' or `L' commands any longer. 
+if you do not want to use the `H' or `L' commands any longer.
 As shown in this example, multiple keys can be assigned to one function
 in a single statement.
 @end deffn
@@ -3597,7 +3597,7 @@ or previous line.
 
 @noindent
 @kbd{H}, @kbd{M} and @kbd{L} move the cursor to the leftmost column
-of the top, center or bottom line of the window. 
+of the top, center or bottom line of the window.
 
 @noindent
 @kbd{|} moves to the specified absolute column.
@@ -3607,7 +3607,7 @@ of the top, center or bottom line of the window.
 
 @noindent
 @kbd{G} or @kbd{end} moves to the specified absolute line (default: end of buffer).
- 
+
 @noindent
 @kbd{%} jumps to the specified percentage of the buffer.
 
@@ -3617,19 +3617,19 @@ or last non-whitespace character on the line.
 
 @noindent
 @kbd{w}, @kbd{b}, and @kbd{e} move the cursor word by word.
- 
+
 @noindent
 @kbd{B}, @kbd{E} move the cursor WORD by WORD (as in vi).
 
 @noindent
-@kbd{f}/@kbd{F}, @kbd{t}/@kbd{T} move the cursor forward/backward to the 
-next occurence of the target. (eg, '3fy' will move the cursor to the 3rd 
+@kbd{f}/@kbd{F}, @kbd{t}/@kbd{T} move the cursor forward/backward to the
+next occurence of the target. (eg, '3fy' will move the cursor to the 3rd
 'y' to the right.)
 
 @noindent
 @kbd{;} and @kbd{,} Repeat the last f/F/t/T command in the same/opposite direction.
 
-@noindent 
+@noindent
 @kbd{C-e} and @kbd{C-y} scroll the display up/down by one line
 while preserving the cursor position.
 
@@ -3657,12 +3657,12 @@ If @code{mousetrack} is set to @code{on}, marks can also be set using
 @kbd{left mouse click}.
 
 @noindent
-@kbd{Y} and @kbd{y} can be used to mark one whole line or to mark from 
+@kbd{Y} and @kbd{y} can be used to mark one whole line or to mark from
 start of line.
 
 @noindent
-@kbd{W} marks exactly one word. 
- 
+@kbd{W} marks exactly one word.
+
 @node Repeat count, Searching, Marking, Copy
 @subsection Repeat Count
 
@@ -3712,7 +3712,7 @@ but @code{screen} does. Press:
 @noindent
 @kbd{c} or @kbd{C} to set the left or right margin respectively. If no
 repeat count is given, both default to the current cursor position.@*
-Example: Try this on a rather full text screen: 
+Example: Try this on a rather full text screen:
 @example
 @kbd{C-a [ M 20 l SPACE c 10 l 5 j C SPACE}.
 @end example
@@ -3752,7 +3752,7 @@ the contents of the paste buffer will not be overwritten, but appended to.
 to the screen-exchange file (@file{/tmp/screen-exchange} per default)
 once copy-mode is finished.  @xref{Screen Exchange}.@*
 This example demonstrates how to dump the
-whole scrollback buffer to that file: 
+whole scrollback buffer to that file:
 @example
 @kbd{C-a [ g SPACE G $ >}.
 @end example
@@ -3781,18 +3781,18 @@ All keys not described here exit copy mode.
 @kindex C-]
 @deffn Command paste [registers [destination]]
 (@kbd{C-a ]}, @kbd{C-a C-]})@*
-Write the (concatenated) contents of the specified registers to the stdin 
+Write the (concatenated) contents of the specified registers to the stdin
 stream of the current window.  The register @samp{.} is treated as the
-paste buffer. If no parameter is specified the user is prompted to enter a 
-single register. The paste buffer can be filled with the 
+paste buffer. If no parameter is specified the user is prompted to enter a
+single register. The paste buffer can be filled with the
 @code{copy}, @code{history} and @code{readbuf} commands.
 Other registers can be filled with the @code{register}, @code{readreg} and
 @code{paste} commands.
 If @code{paste} is called with a second argument, the contents of the specified
 registers is pasted into the named destination register rather than
-the window. If @samp{.} is used as the second argument, the display's paste 
+the window. If @samp{.} is used as the second argument, the display's paste
 buffer is the destination.
-Note, that @code{paste} uses a wide variety of resources: Usually both, a 
+Note, that @code{paste} uses a wide variety of resources: Usually both, a
 current window and a current display are required. But whenever a second
 argument is specified no current window is needed. When the source specification
 only contains registers (not the paste buffer) then there need not be a current
@@ -3818,13 +3818,13 @@ multi character fonts like kanji.
 @deffn Command slowpaste msec
 @deffnx Command defslowpaste msec
 (none)@*
-Define the speed text is inserted in the current window by the @code{paste} 
-command. If the slowpaste value is nonzero text is written character by 
+Define the speed text is inserted in the current window by the @code{paste}
+command. If the slowpaste value is nonzero text is written character by
 character.
 @code{screen} will pause for @var{msec} milliseconds after each write
-to allow the application to process the input. only use @code{slowpaste} if 
-your underlying system exposes flow control problems while pasting large 
-amounts of text. 
+to allow the application to process the input. only use @code{slowpaste} if
+your underlying system exposes flow control problems while pasting large
+amounts of text.
 @code{defslowpaste} specifies the default for new windows.
 @end deffn
 
@@ -3880,7 +3880,7 @@ The encoding of the string can be specified via the @code{-e} option.
 Change the filename used for reading and writing with the paste buffer.
 If the @var{exchange-file} parameter is omitted, @code{screen} reverts
 to the default of @file{/tmp/screen-exchange}.  The following example
-will paste the system's password file into the screen window (using the 
+will paste the system's password file into the screen window (using the
 paste buffer, where a copy remains):
 
 @example
@@ -3949,26 +3949,26 @@ Use with care!
 @section Exec
 @deffn Command exec [[@var{fdpat}] @var{newcommand} [@var{args} ... ]]
 (none)@*
-Run a unix subprocess (specified by an executable path @var{newcommand} and 
+Run a unix subprocess (specified by an executable path @var{newcommand} and
 its optional arguments) in the current window. The flow of data between
-newcommands stdin/stdout/stderr, the process originally started (let us call it 
-"application-process") and 
+newcommands stdin/stdout/stderr, the process originally started (let us call it
+"application-process") and
 screen itself (window) is controlled by the file descriptor pattern @var{fdpat}.
 This pattern is basically a three character sequence representing stdin, stdout
 and stderr of newcommand. A dot (@code{.}) connects the file descriptor
 to screen. An exclamation mark (@code{!}) causes the file descriptor to be
 connected to the application-process. A colon (@code{:}) combines both.
 @*
-User input will go to newcommand unless newcommand receives the 
+User input will go to newcommand unless newcommand receives the
 application-process'
 output (@var{fdpat}s first character is @samp{!} or @samp{:}) or a pipe symbol
 (@samp{|}) is added to the end of @var{fdpat}.
 @*
 Invoking @code{exec} without arguments shows name and arguments of the currently
-running subprocess in this window. Only one subprocess can be running per 
+running subprocess in this window. Only one subprocess can be running per
 window.
 @*
-When a subprocess is running the @code{kill} command will affect it instead of 
+When a subprocess is running the @code{kill} command will affect it instead of
 the windows process. Only one subprocess a time can be running in each window.
 @*
 Refer to the postscript file @file{doc/fdpat.ps} for a confusing
@@ -3981,18 +3981,18 @@ side.
 
 @node Using Exec,  , Exec, Subprocess Execution
 @section Using Exec
-@noindent 
+@noindent
 Abbreviations:
 
 @itemize @bullet
 @item
 Whitespace between the word @samp{exec} and @var{fdpat} and the command name
-can be omitted. 
+can be omitted.
 
 @item
-Trailing dots and a @var{fdpat} consisting only of dots can be omitted. 
+Trailing dots and a @var{fdpat} consisting only of dots can be omitted.
 
-@item 
+@item
 A simple @samp{|} is synonymous for the @samp{!..|} pattern.
 
 @item
@@ -4002,7 +4002,7 @@ The word @samp{exec} can be omitted when the @samp{|} abbreviation is used.
 The word @samp{exec} can always be replaced by leading @samp{!}.
 @end itemize
 
-@noindent 
+@noindent
 Examples:
 
 @table @code
@@ -4010,7 +4010,7 @@ Examples:
 @itemx exec /bin/sh
 @itemx exec ... /bin/sh
 All of the above are equivalent.
-Creates another shell in the same window, while the original shell is still 
+Creates another shell in the same window, while the original shell is still
 running. Output of both shells is displayed and user input is sent to the new
 @file{/bin/sh}.
 
@@ -4025,10 +4025,10 @@ is directly connected to a serial line that needs to be configured.
 @item |less
 @itemx exec !..| less
 Both are equivalent.
-This adds a pager to the window output. The special character @samp{|} is 
-needed to give the user control over the pager although it gets its input from 
-the window's process. This works, because @samp{less} listens on stderr 
-(a behavior that @code{screen} would not expect without the @samp{|}) 
+This adds a pager to the window output. The special character @samp{|} is
+needed to give the user control over the pager although it gets its input from
+the window's process. This works, because @samp{less} listens on stderr
+(a behavior that @code{screen} would not expect without the @samp{|})
 when its stdin is not a tty. @code{Less} versions newer than 177 fail miserably
 here; good old @code{pg} still works.
 
@@ -4135,7 +4135,7 @@ makes @kbd{C-a - 0} select window 10, @kbd{C-a - 1} window 11, etc.
 (none)@*
 Set the command character to @var{x} and the character generating a
 literal command character (by triggering the @code{meta} command)
-to @var{y} (similar to the @samp{-e} option). 
+to @var{y} (similar to the @samp{-e} option).
 Each argument is either a single character, a two-character
 sequence of the form @samp{^x} (meaning @kbd{C-x}), a backslash followed
 by an octal number (specifying the ASCII code of the character), or a
@@ -4146,10 +4146,10 @@ one of the authors.
 
 @deffn Command defescape xy
 (none)@*
-Set the default command characters. This is equivalent to the command 
-@code{escape} except that it is useful for multiuser sessions only. 
+Set the default command characters. This is equivalent to the command
+@code{escape} except that it is useful for multiuser sessions only.
 In a multiuser session
-@code{escape} changes the command character of the calling user, where 
+@code{escape} changes the command character of the calling user, where
 @code{defescape} changes the default command characters for users that
 will be added later.
 @end deffn
@@ -4218,7 +4218,7 @@ used.
 
 @samp{cmd} can be any of screen's commands with an arbitrary
 number of @samp{args}. If @samp{cmd} is omitted the key-binding is
-removed from the table. 
+removed from the table.
 @end deffn
 
 @node Bindkey Examples, Bindkey Control,Bindkey, Key Binding
@@ -4430,7 +4430,7 @@ disabled.  If this entry is installed on your machines you are able to
 do a rlogin and still keep the correct termcap/terminfo entry.  The
 terminal name is put in the @code{$TERM} variable of all new windows.
 @code{screen} also sets the @code{$TERMCAP} variable reflecting the
-capabilities of the virtual terminal emulated. 
+capabilities of the virtual terminal emulated.
 Furthermore, the variable @code{$WINDOW} is set to the window number of each
 window.
 
@@ -4522,7 +4522,7 @@ to run a converter like @code{captoinfo} and then compile the entry with
 Use this command to modify your terminal's termcap entry without going
 through all the hassles involved in creating a custom termcap entry.
 Plus, you can optionally customize the termcap generated for the
-windows.  
+windows.
 You have to place these commands in one of the screenrc startup files, as they
 are meaningless once the terminal emulator is booted.
 
@@ -4613,7 +4613,7 @@ Termcap Manual}, for more information on termcap definitions.
 @node Special Capabilities, Autonuke, Termcap Examples, Termcap
 @section Special Terminal Capabilities
 @cindex terminal capabilities
-@cindex capabilities 
+@cindex capabilities
 The following table describes all terminal capabilities that are
 recognized by @code{screen} and are not in the termcap manual
 (@pxref{Top, , Termcap, termcap, The Termcap Manual}).
@@ -4625,7 +4625,7 @@ often not possible to place these capabilities in the terminfo database.
 @item LP
 (bool)@*
 Terminal has VT100 style margins (`magic margins'). Note that
-this capability is obsolete --- @code{screen} now uses the standard 
+this capability is obsolete --- @code{screen} now uses the standard
 @samp{xn} instead.
 
 @item Z0
@@ -4733,7 +4733,7 @@ This property is set per display, not per window.
 @deffn Command defautonuke @var{state}
 (none)@*
 Same as the @code{autonuke} command except that the default setting for
-new displays is also changed. Initial setting is @code{off}. 
+new displays is also changed. Initial setting is @code{off}.
 Note that you can use the special @code{AN} terminal capability if you
 want to have a terminal type dependent setting.
 @end deffn
@@ -4744,7 +4744,7 @@ want to have a terminal type dependent setting.
 (none)@*
 If the output buffer contains more bytes than the specified limit, no
 more data will be read from the windows. The default value is 256. If
-you have a fast display (like @code{xterm}), you can set it to some 
+you have a fast display (like @code{xterm}), you can set it to some
 higher value. If no argument is specified, the current setting is displayed.
 This property is set per display, not per window.
 @end deffn
@@ -4779,10 +4779,10 @@ A @var{<charset-mapping>} tells screen how to map characters
 in font @var{<designator>} (@samp{B}: Ascii, @samp{A}: UK,
 @samp{K}: german, etc.)
 to strings. Every @var{<mapping>} describes to what string a single
-character will be translated. A template mechanism is used, as 
+character will be translated. A template mechanism is used, as
 most of the time the codes have a lot in common (for example
 strings to switch to and from another charset). Each occurrence
-of @samp{%} in @var{<template>} gets substituted with the 
+of @samp{%} in @var{<template>} gets substituted with the
 @var{template-arg}
 specified together with the character. If your strings are not
 similar at all, then use @samp{%} as a template and place the full
@@ -5021,9 +5021,9 @@ This section describes commands which are only useful in the
 @deffn Command echo [@samp{-n}] message
 (none)@*
 The echo command may be used to annoy @code{screen} users with a
-'message of the day'. Typically installed in a global screenrc. 
+'message of the day'. Typically installed in a global screenrc.
 The option @samp{-n} may be used to suppress the line feed.
-See also @code{sleep}.  
+See also @code{sleep}.
 Echo is also useful for online checking of environment variables.
 @end deffn
 
@@ -5085,7 +5085,7 @@ categories.
 Execute a command at other displays or windows as if it had been entered there.
 @code{At} changes the context (the `current window' or `current display'
 setting) of the command. If the first parameter describes a non-unique context,
-the command will be executed multiple times. If the first parameter is of the 
+the command will be executed multiple times. If the first parameter is of the
 form @samp{@var{identifier}*} then identifier is matched against user names.
 The command is executed once for each display of the selected user(s).
 If the first parameter is of the form @samp{@var{identifier}%} identifier is
@@ -5095,14 +5095,14 @@ If @var{identifier} has a @code{#} or nothing appended it is matched against
 window numbers and titles. Omitting an identifier in front of the @code{#},
 @code{*} or @code{%} character selects all users, displays or windows because
 a prefix-match is performed. Note that on the affected display(s) a short
-message will describe what happened. 
-Note that the @code{#} character works as a comment introducer when it is 
-preceded by whitespace. This can be escaped by prefixing @code{#} with a 
-@code{\}. 
+message will describe what happened.
+Note that the @code{#} character works as a comment introducer when it is
+preceded by whitespace. This can be escaped by prefixing @code{#} with a
+@code{\}.
 Permission is checked for the initiator of the @code{at} command, not for the
 owners of the affected display(s).
-Caveat: 
-When matching against windows, the command is executed at least 
+Caveat:
+When matching against windows, the command is executed at least
 once per window. Commands that change the internal arrangement of windows
 (like @code{other}) may be called again. In shared windows the command will
 be repeated for each attached display. Beware, when issuing toggle commands
@@ -5144,7 +5144,7 @@ current window.
 @deffn Command defbreaktype [tcsendbreak|TIOCSBRK|TCSBRK]
 (none)@*
 Choose one of the available methods of generating a break signal for
-terminal devices opened afterwards. The preferred methods are 
+terminal devices opened afterwards. The preferred methods are
 @code{tcsendbreak} and
 @code{TIOCSBRK}. The third, @code{TCSBRK}, blocks the complete @code{screen}
 session for the duration of the break, but it may be the only way to
@@ -5183,7 +5183,7 @@ Changes windows numbers, so there is no gaps between them.
 (none)@*
 Turns runtime debugging on or off. If @code{screen} has been compiled with
 option @code{-DDEBUG} debugging is available and is turned on per default.
-Note that this command only affects debugging output from the main 
+Note that this command only affects debugging output from the main
 @samp{SCREEN} process correctly. Debug output from attacher processes can only
 be turned off once and forever.
 @end deffn
@@ -5219,12 +5219,12 @@ present, the default is @code{on}.
 Tell screen how to deal with user interfaces (displays) that cease to
 accept output. This can happen if a user presses ^S or a TCP/modem
 connection gets cut but no hangup is received. If nonblock is
-@code{off} (this is the default) screen waits until the display 
+@code{off} (this is the default) screen waits until the display
 restarts to accept the output. If nonblock is @code{on}, screen
 waits until the timeout is reached (@code{on} is treated as 1s). If the
 display still doesn't receive characters, screen will consider
 it ``blocked'' and stop sending characters to it. If at
-some time it restarts to accept characters, screen will unblock 
+some time it restarts to accept characters, screen will unblock
 the display and redisplay the updated window contents.
 @end deffn
 
@@ -5286,13 +5286,13 @@ windows process (e.g. shell) exits. When a string of two keys is
 specified to the zombie command, `dead' windows will remain in the list.
 The @code{kill} command may be used to remove the window. Pressing the first key
 in the dead window has the same effect. Pressing the second key, however,
-screen will attempt to resurrect the window. The process that was initially 
+screen will attempt to resurrect the window. The process that was initially
 running in the window will be launched again. Calling @code{zombie} without
 parameters will clear the zombie setting, thus making windows disappear when
 the process terminates.
 
-As the zombie setting is affected globally for all windows, this command 
-should only be called @code{defzombie}. Until we need this as a per window 
+As the zombie setting is affected globally for all windows, this command
+should only be called @code{defzombie}. Until we need this as a per window
 setting, the commands @code{zombie} and @code{defzombie} are synonymous.
 
 Optionally you can put the word @code{onerror} after the keys. This will
@@ -5339,7 +5339,7 @@ for silence @samp{=u}.
 @section Sorendition
 @deffn Command sorendition [@var{attr} [@var{color}]]
 (none)@*
-This command has been deprecated. Use @code{rendition so} instead. 
+This command has been deprecated. Use @code{rendition so} instead.
 @end deffn
 
 @node Attrcolor, Setsid, Sorendition, Miscellaneous
@@ -5356,7 +5356,7 @@ the modifier. @code{Screen} understands two pseudo-attributes, @code{i}
 stands for high-intensity foreground color and @code{I} for
 high-intensity background color.
 
-@noindent 
+@noindent
 Examples:
 @table @code
 @item attrcolor b "R"
@@ -5394,7 +5394,7 @@ Parses and executes each argument as separate command.
 @section Maxwin
 @deffn Command maxwin @var{n}
 (none)@*
-Set the maximum window number screen will create. Doesn't affect 
+Set the maximum window number screen will create. Doesn't affect
 already existing windows. The number can be increased only when there are no
 existing windows.
 @end deffn
@@ -5412,7 +5412,7 @@ of seconds the output is considered valid. After this time, the
 command is run again if a corresponding string escape is encountered.
 The @var{autorefresh} parameter triggers an
 automatic refresh for caption and hardstatus strings after the
-specified number of seconds. Only the last line of output is used 
+specified number of seconds. Only the last line of output is used
 for substitution.
 
 If both the @var{lifespan} and the @var{autorefresh} parameters
@@ -5422,7 +5422,7 @@ In this case, the command is executed right away and screen stores
 the last line of output. If a new line gets printed screen will
 automatically refresh the hardstatus or the captions.
 
-The second form of the command deletes the backtick command 
+The second form of the command deletes the backtick command
 with the numerical id @var{id}.
 @end deffn
 
@@ -5586,7 +5586,7 @@ An attribute/color modifier is is used to change the attributes or the
 color settings. Its format
 is @samp{[attribute modifier] [color description]}. The attribute modifier
 must be prefixed by a change type indicator if it can be confused with
-a color description. The following change types are known: 
+a color description. The following change types are known:
 @table @code
 @item +
 add the specified set to the current attributes
@@ -5598,7 +5598,7 @@ invert the set in the current attributes
 change the current attributes to the specified set
 @end table
 The attribute set can either be specified as a hexadecimal number or
-a combination of the following letters: 
+a combination of the following letters:
 @table @code
 @item d
 dim
@@ -5796,8 +5796,8 @@ Contributors @*
 ============
 
 @example
-     Thomas Renninger <treen@suse.com>,
-     Axel Beckert <abe@deuxchevaux.org>,
+     Thomas Renninger <treen@@suse.com>,
+     Axel Beckert <abe@@deuxchevaux.org>,
      Ken Beal <kbeal@@amber.ssd.csd.harris.com>,
      Rudolf Koenig <rfkoenig@@informatik.uni-erlangen.de>,
      Toerless Eckert <eckert@@informatik.uni-erlangen.de>,
@@ -5862,7 +5862,7 @@ found a bug not mentioned here.
 are ignored).  @samp{xn} is treated as a magic-margin indicator.
 
 @item
-@code{screen} has no clue about double-high or double-wide characters. 
+@code{screen} has no clue about double-high or double-wide characters.
 But this is the only area where @code{vttest} is allowed to fail.
 
 @item
@@ -5894,11 +5894,11 @@ entry.
 
 @item
 When the modem line was hung up, @code{screen} may not automatically detach
-(or quit) unless the device driver sends a HANGUP signal. To detach such a 
+(or quit) unless the device driver sends a HANGUP signal. To detach such a
 @code{screen} session use the -D or -d command line option.
 
 @item
-If a password is set, the command line options -d and -D still detach a 
+If a password is set, the command line options -d and -D still detach a
 session without asking.
 
 @item
@@ -5909,8 +5909,8 @@ windows.
 
 @item
 When attaching to a multiuser session, the user's @file{.screenrc} file is not
-sourced. Each users personal settings have to be included in the 
-@file{.screenrc} file from which the session is booted, or have to be 
+sourced. Each users personal settings have to be included in the
+@file{.screenrc} file from which the session is booted, or have to be
 changed manually.
 
 @item
@@ -5940,7 +5940,7 @@ debug output and show the contents of your @file{config.h} if it matters.
 
 The latest official release of @code{screen} available via anonymous
 ftp from @samp{prep.ai.mit.edu}, @samp{nic.funet.fi} or any other
-@code{GNU} distribution site.  The home site of 
+@code{GNU} distribution site.  The home site of
 @code{screen} is @samp{ftp.uni-erlangen.de
 (131.188.3.71)}, in the directory @file{pub/utilities/screen}.
 The subdirectory @samp{private} contains the latest beta testing release.
@@ -5963,8 +5963,8 @@ does not include these features of 4.2 and 4.3 BSD UNIX.
 @section Socket Directory
 @cindex socket directory
 
-The socket directory defaults either to @file{$HOME/.screen} or simply to 
-@file{/tmp/screens} or preferably to @file{/usr/local/screens} chosen at 
+The socket directory defaults either to @file{$HOME/.screen} or simply to
+@file{/tmp/screens} or preferably to @file{/usr/local/screens} chosen at
 compile-time. If @code{screen} is installed
 setuid root, then the administrator should compile screen with an
 adequate (not NFS mounted) @code{SOCKDIR}. If @code{screen} is not
@@ -5977,8 +5977,8 @@ environment variable @code{$SCREENDIR}.
 
 To compile and install screen:
 
-The @code{screen} package comes with a @code{GNU Autoconf} configuration 
-script. Before you compile the package run 
+The @code{screen} package comes with a @code{GNU Autoconf} configuration
+script. Before you compile the package run
 
 @center @code{sh ./configure}
 
@@ -5987,8 +5987,8 @@ If @code{configure} fails for some reason, then look at the examples and
 comments found in the @file{Makefile.in} and @file{config.h.in} templates.
 Rename @file{config.status} to @file{config.status.@var{machine}} when
 you want to keep configuration data for multiple architectures. Running
-@code{sh ./config.status.@var{machine}} recreates your configuration 
-significantly faster than rerunning @code{configure}. 
+@code{sh ./config.status.@var{machine}} recreates your configuration
+significantly faster than rerunning @code{configure}.
 @*
 Read through the "User Configuration" section of @file{config.h}, and verify
 that it suits your needs.
