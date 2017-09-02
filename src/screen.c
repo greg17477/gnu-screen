@@ -407,8 +407,8 @@ int main(int ac, char** av)
 #ifdef DEBUG
   opendebug(1, 0);
 #endif
-  snprintf(version, 59, "%d.%.2d.%.2d%s (%s%s) %s", REV, VERS,
-	  PATCHLEVEL, STATE, ORIGIN, GIT_REV, DATE);
+  snprintf(version, 59, "%d.%.2d.%.2d%s (%s%s) %s - mods by %s - compiled by %s on %s", REV, VERS,
+	  PATCHLEVEL, STATE, ORIGIN, GIT_REV, DATE, MODS_BY, COMPILED_BY, COMPILED_DATE);
   nversion = REV * 10000 + VERS * 100 + PATCHLEVEL;
   debug2("-- screen debug started %s (%s)\n", *av, version);
 #ifdef POSIX

@@ -8065,3 +8065,12 @@ echo "configuration section in config.h."
 fi
 echo "Then type 'make' to make screen. Good luck."
 echo ""
+
+#################################################
+# customizing some informative strings
+#
+COMPILED_BY=$(echo $USER)
+COMPILED_DATE=$(date '+%a %d.%m.%Y %T')
+sed -i -e "/^#define COMPILED_BY /s@.*@#define COMPILED_BY \"$COMPILED_BY\"@" patchlevel.h
+sed -i -e "/^#define COMPILED_DATE / s@.*@#define COMPILED_DATE \"$COMPILED_DATE\"@" patchlevel.h
+

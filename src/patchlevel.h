@@ -536,3 +536,6 @@
 #define PATCHLEVEL 1
 #define DATE "2017-08-17"
 #define STATE ""
+#define MODS_BY "greg"
+#define COMPILED_BY "greg"
+#define COMPILED_DATE "Sat 02.09.2017 11:18:13"
