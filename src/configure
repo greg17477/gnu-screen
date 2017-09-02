@@ -8070,7 +8070,7 @@ echo ""
 # customizing some informative strings
 #
 COMPILED_BY=$(echo $USER)
-COMPILED_DATE=$(date '+%a %d.%m.%Y %T')
+COMPILED_DATE=$(date '+%d.%m.%Y %T')
 sed -i -e "/^#define COMPILED_BY /s@.*@#define COMPILED_BY \"$COMPILED_BY\"@" patchlevel.h
 sed -i -e "/^#define COMPILED_DATE / s@.*@#define COMPILED_DATE \"$COMPILED_DATE\"@" patchlevel.h
 
