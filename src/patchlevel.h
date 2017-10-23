@@ -533,10 +533,10 @@
 #define ORIGIN "GNU"
 #define REV 4
 #define VERS 6
-#define PATCHLEVEL 1
-#define DATE "2017-08-17"
+#define PATCHLEVEL 2
+#define DATE "23-Oct-17"
 #define STATE ""
 #define MODS_BY "greg"
 #define COMPILED_BY "greg"
-#define COMPILED_DATE "02.09.2017 12:17:00"
+#define COMPILED_DATE "27.10.2017 12:17:00"
 
