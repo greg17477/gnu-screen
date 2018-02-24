@@ -5860,8 +5860,10 @@ Contributors @*
 ============
 
 @verbatim
-     Thomas Renninger <treen@@suse.com>,
-     Axel Beckert <abe@@deuxchevaux.org>,
+     Maarten ter Huurne <maarten@treewalker.org>,
+     Jussi Kukkonen <jussi.kukkonen@intel.com>,
+     Thomas Renninger <treen@suse.com>,
+     Axel Beckert <abe@deuxchevaux.org>,
      Ken Beal <kbeal@@amber.ssd.csd.harris.com>,
      Rudolf Koenig <rfkoenig@@informatik.uni-erlangen.de>,
      Toerless Eckert <eckert@@informatik.uni-erlangen.de>,
