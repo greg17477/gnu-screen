@@ -102,6 +102,7 @@ extern struct winsize glwz;
 #endif
 extern char **NewEnv;
 extern int real_uid, real_gid;
+extern int ServerSocket, eff_uid, eff_gid;
 #endif
 
 /*
@@ -3994,6 +3995,7 @@ char **cmdv;
       return;
     case 0:
       displays = 0;
+      ServerSocket = -1;
 #ifdef DEBUG
       if (dfp && dfp != stderr)
 	{
@@ -4003,6 +4005,8 @@ char **cmdv;
 #endif
       if (setgid(real_gid) || setuid(real_uid))
         Panic(errno, "setuid/setgid");
+      eff_uid = real_uid;
+      eff_gid = real_gid;
       brktty(D_userfd);
       freetty();
       close(0);
