@@ -11,7 +11,7 @@ DESTDIR =
 
 # Where to install screen.
 
-prefix = /usr
+prefix = /home/gulatows
 exec_prefix = ${prefix}
 datarootdir = ${prefix}/share
 datadir = ${datarootdir}
@@ -19,7 +19,7 @@ datadir = ${datarootdir}
 # don't forget to change mandir and infodir in doc/Makefile.
 bindir  = $(exec_prefix)/bin
 
-VERSION = 4.6.1
+VERSION = 4.6.2
 SCREEN = screen-$(VERSION)
 
 GIT_REV = 
@@ -36,7 +36,7 @@ CFLAGS = -g -O2 -D_GNU_SOURCE
 CPPFLAGS =  -DETCSCREENRC='"$(ETCSCREENRC)"' \
            -DSCREENENCODINGS='"$(SCREENENCODINGS)"'
 LDFLAGS = 
-LIBS = -lcurses  -lutil -lcrypt
+LIBS = -lcurses  -lcrypt
 
 CPP=gcc -E
 CPP_DEPEND=$(CC) -MM
@@ -45,7 +45,7 @@ INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_DATA = ${INSTALL} -m 644
 
-AWK = gawk
+AWK = mawk
 
 ### Chose some debug configuration options:
 # -DDEBUG

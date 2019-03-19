@@ -276,7 +276,7 @@
  * Define USE_LOCALE if you want screen to use the locale names
  * for the name of the month and day of the week.
  */
-#define USE_LOCALE
+#define USE_LOCALE 1
 
 /*
  * Define USE_PAM if your system supports PAM (Pluggable Authentication
@@ -399,7 +399,7 @@
  * 
  */
 #ifndef POSIX
-#define BSDWAIT 1
+/* #undef BSDWAIT */
 #endif
 
 /*
@@ -644,7 +644,7 @@
 #define HAVE_STRING_H 1
 
 /* Define to 1 if you have the <stropts.h> header file. */
-/* #undef HAVE_STROPTS_H */
+#define HAVE_STROPTS_H 1
 
 /* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
    */
